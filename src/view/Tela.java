@@ -13,12 +13,18 @@ import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 public class Tela extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+	private JTextField textFieldNomeAluno;
+	private JTextField textFieldRAAluno;
+	private JTextField textField;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -44,6 +50,7 @@ public class Tela extends JFrame {
 		setTitle("Sistema de TCC");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
+		setResizable(false);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -69,12 +76,13 @@ public class Tela extends JFrame {
 		paneAluno.add(formAluno, "name_3401734247750200");
 		formAluno.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Alunos");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel.setBounds(10, 11, 294, 23);
-		listAluno.add(lblNewLabel);
+		JLabel lblAlunos = new JLabel("Alunos");
+		lblAlunos.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblAlunos.setBounds(10, 11, 294, 23);
+		listAluno.add(lblAlunos);
 		
 		JButton btnNovoAluno = new JButton("Novo Aluno");
+		btnNovoAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnNovoAluno.setBounds(609, 477, 140, 23);
 		btnNovoAluno.addActionListener(new ActionListener() {
 			@Override
@@ -84,13 +92,32 @@ public class Tela extends JFrame {
 		});
 		listAluno.add(btnNovoAluno);
 		
-		JLabel lblNewLabel_1 = new JLabel("Novo Aluno");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1.setBounds(10, 11, 291, 23);
-		formAluno.add(lblNewLabel_1);
+		JScrollPane scrollPaneAluno = new JScrollPane();
+		scrollPaneAluno.setBounds(20, 45, 716, 420);
+		listAluno.add(scrollPaneAluno);
+		
+		JTextArea taAlunoLista = new JTextArea();
+		scrollPaneAluno.setViewportView(taAlunoLista);
+		
+		textField = new JTextField();
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textField.setColumns(10);
+		textField.setBounds(292, 9, 294, 30);
+		listAluno.add(textField);
+		
+		JButton btnBuscarAluno = new JButton("Buscar Aluno");
+		btnBuscarAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnBuscarAluno.setBounds(596, 13, 140, 23);
+		listAluno.add(btnBuscarAluno);
+		
+		JLabel lblNovoAluno = new JLabel("Novo Aluno");
+		lblNovoAluno.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNovoAluno.setBounds(10, 11, 291, 23);
+		formAluno.add(lblNovoAluno);
 		
 		JButton btnCancelaAluno = new JButton("Cancelar");
-		btnCancelaAluno.setBounds(550, 477, 140, 23);
+		btnCancelaAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnCancelaAluno.setBounds(460, 477, 140, 23);
 		btnCancelaAluno.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -98,6 +125,38 @@ public class Tela extends JFrame {
 			}
 		});
 		formAluno.add(btnCancelaAluno);
+		
+		JButton btnGravarAluno = new JButton("Gravar");
+		btnGravarAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnGravarAluno.setBounds(609, 477, 140, 23);
+		formAluno.add(btnGravarAluno);
+		
+		JLabel lblNomeAluno = new JLabel("Nome: ");
+		lblNomeAluno.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNomeAluno.setBounds(50, 70, 100, 30);
+		formAluno.add(lblNomeAluno);
+		
+		JLabel lblRAAluno = new JLabel("RA:");
+		lblRAAluno.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblRAAluno.setBounds(50, 120, 100, 30);
+		formAluno.add(lblRAAluno);
+		
+		textFieldNomeAluno = new JTextField();
+		textFieldNomeAluno.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textFieldNomeAluno.setBounds(160, 70, 485, 30);
+		formAluno.add(textFieldNomeAluno);
+		textFieldNomeAluno.setColumns(10);
+		
+		textFieldRAAluno = new JTextField();
+		textFieldRAAluno.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textFieldRAAluno.setColumns(10);
+		textFieldRAAluno.setBounds(160, 127, 485, 30);
+		formAluno.add(textFieldRAAluno);
+		
+		JButton btnUploadAluno = new JButton("Upload por CSV");
+		btnUploadAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnUploadAluno.setBounds(10, 477, 140, 23);
+		formAluno.add(btnUploadAluno);
 		
 		JPanel tabTrabalho = new JPanel();
 		tabbedPane.addTab("Trabalhos", null, tabTrabalho, "Registro de Trabalhos");
@@ -116,10 +175,10 @@ public class Tela extends JFrame {
 		paneTrabalho.add(formTrabalho, "name_3402794614775400");
 		formTrabalho.setLayout(null);
 		
-		JLabel lblNewLabel_2 = new JLabel("Trabalhos");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_2.setBounds(10, 11, 117, 23);
-		listTrabalho.add(lblNewLabel_2);
+		JLabel lblTrabalhos = new JLabel("Trabalhos");
+		lblTrabalhos.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblTrabalhos.setBounds(10, 11, 117, 23);
+		listTrabalho.add(lblTrabalhos);
 		
 		JButton btnNovoTrabalho = new JButton("Novo Trabalho");
 		btnNovoTrabalho.setBounds(609, 477, 140, 23);
@@ -142,10 +201,10 @@ public class Tela extends JFrame {
 		});
 		formTrabalho.add(btnCancelaTrabalho);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("Novo Trabalho");
-		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_1_1.setBounds(10, 11, 291, 23);
-		formTrabalho.add(lblNewLabel_1_1);
+		JLabel lblNovoTrabalho = new JLabel("Novo Trabalho");
+		lblNovoTrabalho.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNovoTrabalho.setBounds(10, 11, 291, 23);
+		formTrabalho.add(lblNovoTrabalho);
 		
 		JPanel tabArea = new JPanel();
 		tabbedPane.addTab("Áreas", null, tabArea, "Registro de áreas");
@@ -164,10 +223,10 @@ public class Tela extends JFrame {
 		paneArea.add(formArea, "name_3406428848724000");
 		formArea.setLayout(null);
 		
-		JLabel lblNewLabel_2_1 = new JLabel("Áreas");
-		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_2_1.setBounds(10, 11, 117, 23);
-		listArea.add(lblNewLabel_2_1);
+		JLabel lblAreas = new JLabel("Áreas");
+		lblAreas.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblAreas.setBounds(10, 11, 117, 23);
+		listArea.add(lblAreas);
 		
 		JButton btnNovarea = new JButton("Nova Área");
 		btnNovarea.setBounds(609, 477, 140, 23);
@@ -179,10 +238,10 @@ public class Tela extends JFrame {
 		});
 		listArea.add(btnNovarea);
 		
-		JLabel lblNewLabel_2_1_1 = new JLabel("Nova Área");
-		lblNewLabel_2_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_2_1_1.setBounds(10, 11, 117, 23);
-		formArea.add(lblNewLabel_2_1_1);
+		JLabel lblNovaArea = new JLabel("Nova Área");
+		lblNovaArea.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNovaArea.setBounds(10, 11, 117, 23);
+		formArea.add(lblNovaArea);
 		
 		JButton btnCancelaArea = new JButton("Cancela");
 		btnCancelaArea.setBounds(550, 477, 140, 23);
@@ -211,10 +270,10 @@ public class Tela extends JFrame {
 		paneOrientacao.add(formOrientacao, "name_3406630470810300");
 		formOrientacao.setLayout(null);
 		
-		JLabel lblNewLabel_2_1_2 = new JLabel("Orientações");
-		lblNewLabel_2_1_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_2_1_2.setBounds(10, 11, 117, 23);
-		listOrientacao.add(lblNewLabel_2_1_2);
+		JLabel lblOrientacoes = new JLabel("Orientações");
+		lblOrientacoes.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblOrientacoes.setBounds(10, 11, 117, 23);
+		listOrientacao.add(lblOrientacoes);
 		
 		JButton btnNovaOrientacao = new JButton("Nova Orientação");
 		btnNovaOrientacao.setBounds(609, 477, 140, 23);
@@ -226,10 +285,10 @@ public class Tela extends JFrame {
 		});
 		listOrientacao.add(btnNovaOrientacao);
 		
-		JLabel lblNewLabel_2_1_1_1 = new JLabel("Nova Orientação");
-		lblNewLabel_2_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_2_1_1_1.setBounds(10, 11, 117, 23);
-		formOrientacao.add(lblNewLabel_2_1_1_1);
+		JLabel lblNovaOrientacao = new JLabel("Nova Orientação");
+		lblNovaOrientacao.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNovaOrientacao.setBounds(10, 11, 248, 23);
+		formOrientacao.add(lblNovaOrientacao);
 		
 		JButton btnCancelaOrientacao = new JButton("Cancela");
 		btnCancelaOrientacao.setBounds(550, 477, 140, 23);
