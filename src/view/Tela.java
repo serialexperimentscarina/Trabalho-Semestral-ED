@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.AlunoController;
+
 import javax.swing.JTabbedPane;
 import javax.swing.JLayeredPane;
 import java.awt.CardLayout;
@@ -22,9 +25,9 @@ public class Tela extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-	private JTextField textFieldNomeAluno;
-	private JTextField textFieldRAAluno;
-	private JTextField textFieldBuscaAluno;
+	private JTextField tfAlunoNome;
+	private JTextField tfAlunoRa;
+	private JTextField tfAlunoBusca;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -99,13 +102,13 @@ public class Tela extends JFrame {
 		JTextArea taAlunoLista = new JTextArea();
 		scrollPaneAluno.setViewportView(taAlunoLista);
 		
-		textFieldBuscaAluno = new JTextField();
-		textFieldBuscaAluno.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textFieldBuscaAluno.setColumns(10);
-		textFieldBuscaAluno.setBounds(292, 9, 294, 30);
-		listAluno.add(textFieldBuscaAluno);
+		tfAlunoBusca = new JTextField();
+		tfAlunoBusca.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfAlunoBusca.setColumns(10);
+		tfAlunoBusca.setBounds(292, 9, 294, 30);
+		listAluno.add(tfAlunoBusca);
 		
-		JButton btnBuscaAluno = new JButton("Buscar Aluno");
+		JButton btnBuscaAluno = new JButton("Buscar");
 		btnBuscaAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnBuscaAluno.setBounds(596, 13, 140, 23);
 		listAluno.add(btnBuscaAluno);
@@ -141,17 +144,17 @@ public class Tela extends JFrame {
 		lblRAAluno.setBounds(50, 120, 100, 30);
 		formAluno.add(lblRAAluno);
 		
-		textFieldNomeAluno = new JTextField();
-		textFieldNomeAluno.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textFieldNomeAluno.setBounds(160, 70, 485, 30);
-		formAluno.add(textFieldNomeAluno);
-		textFieldNomeAluno.setColumns(10);
+		tfAlunoNome = new JTextField();
+		tfAlunoNome.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfAlunoNome.setBounds(160, 70, 485, 30);
+		formAluno.add(tfAlunoNome);
+		tfAlunoNome.setColumns(10);
 		
-		textFieldRAAluno = new JTextField();
-		textFieldRAAluno.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textFieldRAAluno.setColumns(10);
-		textFieldRAAluno.setBounds(160, 127, 485, 30);
-		formAluno.add(textFieldRAAluno);
+		tfAlunoRa = new JTextField();
+		tfAlunoRa.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfAlunoRa.setColumns(10);
+		tfAlunoRa.setBounds(160, 127, 485, 30);
+		formAluno.add(tfAlunoRa);
 		
 		JButton btnUploadAluno = new JButton("Upload por CSV");
 		btnUploadAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -299,5 +302,10 @@ public class Tela extends JFrame {
 			}
 		});
 		formOrientacao.add(btnCancelaOrientacao);
+		
+		AlunoController ctrlAluno = new AlunoController(tfAlunoNome, tfAlunoRa, taAlunoLista, tfAlunoBusca);
+		
+		btnGravarAluno.addActionListener(ctrlAluno);
+		btnBuscaAluno.addActionListener(ctrlAluno);
 	}
 }
