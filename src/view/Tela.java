@@ -24,7 +24,7 @@ public class Tela extends JFrame {
 	private final JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	private JTextField textFieldNomeAluno;
 	private JTextField textFieldRAAluno;
-	private JTextField textField;
+	private JTextField textFieldBuscaAluno;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -99,16 +99,16 @@ public class Tela extends JFrame {
 		JTextArea taAlunoLista = new JTextArea();
 		scrollPaneAluno.setViewportView(taAlunoLista);
 		
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		textField.setColumns(10);
-		textField.setBounds(292, 9, 294, 30);
-		listAluno.add(textField);
+		textFieldBuscaAluno = new JTextField();
+		textFieldBuscaAluno.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		textFieldBuscaAluno.setColumns(10);
+		textFieldBuscaAluno.setBounds(292, 9, 294, 30);
+		listAluno.add(textFieldBuscaAluno);
 		
-		JButton btnBuscarAluno = new JButton("Buscar Aluno");
-		btnBuscarAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnBuscarAluno.setBounds(596, 13, 140, 23);
-		listAluno.add(btnBuscarAluno);
+		JButton btnBuscaAluno = new JButton("Buscar Aluno");
+		btnBuscaAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnBuscaAluno.setBounds(596, 13, 140, 23);
+		listAluno.add(btnBuscaAluno);
 		
 		JLabel lblNovoAluno = new JLabel("Novo Aluno");
 		lblNovoAluno.setFont(new Font("Tahoma", Font.BOLD, 18));
