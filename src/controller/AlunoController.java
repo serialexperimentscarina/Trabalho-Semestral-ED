@@ -58,9 +58,15 @@ public class AlunoController implements ActionListener{
 		aluno.nome = tfAlunoNome.getText();
 		aluno.ra = tfAlunoRa.getText();
 		
-		System.out.println("Aluno [" + aluno + "]");
-		
-		gravaAluno(aluno.toString());
+		if (!aluno.nome.equals("") && (!aluno.ra.equals("") && aluno.ra.matches("[0-9]+"))) {
+			gravaAluno(aluno.toString());
+			
+			tfAlunoNome.setText("");
+			tfAlunoRa.setText("");
+		} else {
+			JOptionPane.showMessageDialog(null, "Um ou mais campos vazios ou possuem caracteres inválidos", "ERRO!", JOptionPane.ERROR_MESSAGE);
+		}
+
 	}
 	
 
@@ -94,7 +100,7 @@ public class AlunoController implements ActionListener{
 		if (aluno.nome != null) {
 			taAlunoLista.setText("Nome: " + aluno.nome + "; RA: " + aluno.ra);
 		} else {
-			JOptionPane.showMessageDialog(null, "Aluno não encontrado");
+			JOptionPane.showMessageDialog(null, "Aluno não encontrado!", "ERRO!", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
