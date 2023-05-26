@@ -26,5 +26,5 @@ necessidade, consultar, por subárea, quais os grupos envolvidos
 
 - [@Kauã Nunes Nascimento](https://www.github.com/knn654)
 - [@Carina Gonçalves Barroso](https://www.github.com/serialexperimentscarina)
-
+- [@Felype Dantas](https://github.com/felypedantas)
 
