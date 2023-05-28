@@ -3,7 +3,6 @@ package view;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -15,6 +14,7 @@ import javax.swing.JLayeredPane;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -61,6 +61,9 @@ public class Tela extends JFrame {
 		contentPane.setLayout(null);
 		tabbedPane.setBounds(0, 0, 784, 561);
 		contentPane.add(tabbedPane);
+		
+		JPanel tabPrincipal = new JPanel();
+		tabbedPane.addTab("New tab", null, tabPrincipal, null);
 		
 		JPanel tabAluno = new JPanel();
 		tabbedPane.addTab("Alunos", null, tabAluno, "Registro de alunos");
@@ -305,7 +308,12 @@ public class Tela extends JFrame {
 		
 		AlunoController ctrlAluno = new AlunoController(tfAlunoNome, tfAlunoRa, taAlunoLista, tfAlunoBusca);
 		
+		JPanel tabSubarea = new JPanel();
+		tabbedPane.addTab("Subáreas", null, tabSubarea, "Registro de subáreas");
+		
 		btnGravarAluno.addActionListener(ctrlAluno);
 		btnBuscaAluno.addActionListener(ctrlAluno);
+		btnUploadAluno.addActionListener(ctrlAluno);
 	}
+	
 }

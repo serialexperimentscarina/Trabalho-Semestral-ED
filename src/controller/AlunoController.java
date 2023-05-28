@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -13,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import br.com.serialexperimentscarina.listaobject.ListaObject;
 import model.Aluno;
 
 public class AlunoController implements ActionListener{
@@ -35,23 +37,25 @@ public class AlunoController implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
-		if (cmd.equals("Gravar")) {
-			try {
-				gravar();
-			} catch (Exception e1) {
-				e1.printStackTrace();
+		try {
+			switch (cmd) {
+				case "Gravar":
+					gravar();	
+					break;
+				case "Buscar":
+					buscar();	
+					break;
+				case "Upload por CSV":
+					upload();	
+					break;
+				default:
+					break;
 			}
-		}
-		if (cmd.equals("Buscar")) {
-			try {
-				buscar();
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
 		}
 		
 	}
-
 
 	private void gravar() throws Exception {
 		Aluno aluno = new Aluno();
@@ -131,5 +135,46 @@ public class AlunoController implements ActionListener{
 		}
 		return aluno;
 	}	
+	
+	private void upload() throws Exception {
+		UploadController uploadCrtl = new UploadController();
+		File arquivo = uploadCrtl.uploadArquivo();
+		ListaObject listaAluno = new ListaObject();
+		
+		if (arquivo != null) {
+			FileInputStream fInStr = new FileInputStream(arquivo);
+			InputStreamReader InStrReader = new InputStreamReader(fInStr);
+			BufferedReader bufferReader = new BufferedReader(InStrReader);
+			String linha = bufferReader.readLine();
+			
+			while (linha != null) {
+				String[] vetLinha = linha.split(";");
+				
+				// Checa se todos os campos do CSV estão corretos
+				if (vetLinha.length == 2 && !vetLinha[0].equals("") && (!vetLinha[1].equals("") && vetLinha[1].matches("[0-9]+"))) {
+					Aluno aluno = new Aluno();
+					aluno.nome = vetLinha[0];
+					aluno.ra = vetLinha[1];
+					listaAluno.addFirst(aluno);
+				} else {
+					JOptionPane.showMessageDialog(null, "Um ou mais campos inválidos passados por CSV, verifique seu arquivo e tente novamente", "ERRO!", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				linha = bufferReader.readLine();
+			}
+			bufferReader.close();
+			InStrReader.close();
+			fInStr.close();
+			
+			//Se todos os alunos passados forem válidos, adiciona eles ao sistema
+			while (!listaAluno.isEmpty()) {
+				gravaAluno(listaAluno.get(0).toString());
+				listaAluno.removeFirst();
+			}
+			
+			JOptionPane.showMessageDialog(null, "Upload feito com sucesso", "Upload concluído", JOptionPane.PLAIN_MESSAGE);
+			
+		}
+	}
 	
 }
