@@ -4,15 +4,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import br.com.serialexperimentscarina.listaobject.ListaObject;
 import model.Aluno;
 import model.Trabalho;
 
@@ -37,13 +40,21 @@ public class TrabalhoController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
-		if (cmd.equals("Gravar")) {
-			try {
-				gravar();
-			} catch (Exception e1) {
-				e1.printStackTrace();
+		try {
+			switch (cmd) {
+				case "Gravar":
+					gravar();	
+					break;
+				case "Upload por CSV":
+					upload();	
+					break;
+				default:
+					break;
 			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
 		}
+		
 	}
 
 	private void gravar() throws Exception {
@@ -124,6 +135,52 @@ public class TrabalhoController implements ActionListener {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	private void upload() throws Exception {
+		UploadController uploadCrtl = new UploadController();
+		File arquivo = uploadCrtl.uploadArquivo();
+		ListaObject listaTrabalho = new ListaObject();
+		
+		if (arquivo != null) {
+			FileInputStream fInStr = new FileInputStream(arquivo);
+			InputStreamReader InStrReader = new InputStreamReader(fInStr);
+			BufferedReader bufferReader = new BufferedReader(InStrReader);
+			String linha = bufferReader.readLine();
+			
+			while (linha != null) {
+				String[] vetLinha = linha.split(";");
+				if (vetLinha[0].matches("[0-9]+") &&
+					(!vetLinha[1].equals("")) &&
+					(!vetLinha[2].equals("")) &&
+					(!vetLinha[3].equals("")) &&
+					(!vetLinha[4].equals(""))) {
+					Trabalho trabalho = new Trabalho();
+					trabalho.codigo = vetLinha[0];
+					trabalho.tipo = vetLinha[1];
+					trabalho.tema = vetLinha[2];
+					trabalho.area = vetLinha[3];
+					trabalho.subarea = vetLinha[4];
+					listaTrabalho.addFirst(trabalho);
+				} else {
+					JOptionPane.showMessageDialog(null, "Um ou mais campos inválidos passados por CSV, verifique seu arquivo e tente novamente", "ERRO!", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				linha = bufferReader.readLine();
+			}
+			bufferReader.close();
+			InStrReader.close();
+			fInStr.close();
+			
+			
+			while (!listaTrabalho.isEmpty()) {
+				gravaTrabalho(listaTrabalho.get(0).toString());
+				listaTrabalho.removeFirst();
+			}
+			
+			JOptionPane.showMessageDialog(null, "Upload feito com sucesso", "Upload concluído", JOptionPane.PLAIN_MESSAGE);
+			
 		}
 	}
 

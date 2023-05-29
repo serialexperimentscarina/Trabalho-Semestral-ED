@@ -502,6 +502,7 @@ public class Tela extends JFrame {
 		tfTrabalhoTema, tfTrabalhoArea,  tfTrabalhoSubarea);
 		
 		btnGravarTrabalho.addActionListener(ctrlTrabalho);
+		btnUploadTrabalho.addActionListener(ctrlTrabalho);
 		
 		AreaController ctrlArea = new AreaController(tfCodigoArea, tfNomeArea, taDescArea, tfSubareas, taSubareas, taAreaLista, tfAreaBusca);
 		
