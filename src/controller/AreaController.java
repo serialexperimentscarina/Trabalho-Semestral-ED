@@ -126,15 +126,10 @@ public class AreaController implements ActionListener{
 
 	private void buscar() throws Exception {
 		Area area = new Area();
-		if (!tfAreaBusca.getText().equals("") && tfAreaBusca.getText().matches("[0-9]+")) {
-			area.codigo = Integer.parseInt(tfAreaBusca.getText());
-		} else {
-			JOptionPane.showMessageDialog(null, "Código de área buscado é inválido", "ERRO!", JOptionPane.ERROR_MESSAGE);
-			return;
-		}
+		area.nome =tfAreaBusca.getText();
 		
 		area = buscaArea(area);
-		if (area.nome != null) {
+		if (area.descricao != null) {
 			String stringSubareas = "; Subáreas: ";
 			int numSubareas = area.subareas.size();
 			for (int i = 0; i < numSubareas; i++) {
@@ -158,8 +153,8 @@ public class AreaController implements ActionListener{
 			String linha = buffer.readLine();
 			while (linha != null) {
 				String[] vetLinha = linha.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-				if (vetLinha[0].equals(String.valueOf(area.codigo))) {
-					area.nome = vetLinha[1];
+				if (vetLinha[1].equals(area.nome)) {
+					area.codigo = Integer.parseInt(vetLinha[0]);
 					area.descricao = vetLinha[2];
 					String[] listaSubareas = vetLinha[3].substring(1, vetLinha[3].length() - 1).split(";");
 					int numSubareas = listaSubareas.length;
