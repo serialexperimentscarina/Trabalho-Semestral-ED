@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controller.AlunoController;
+import controller.AreaController;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JLayeredPane;
@@ -28,6 +29,7 @@ public class Tela extends JFrame {
 	private JTextField tfAlunoNome;
 	private JTextField tfAlunoRa;
 	private JTextField tfAlunoBusca;
+	private JTextField tfSubareas;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -62,8 +64,8 @@ public class Tela extends JFrame {
 		tabbedPane.setBounds(0, 0, 784, 561);
 		contentPane.add(tabbedPane);
 		
-		JPanel tabPrincipal = new JPanel();
-		tabbedPane.addTab("New tab", null, tabPrincipal, null);
+		JPanel tabTelaInicial = new JPanel();
+		tabbedPane.addTab("Tela Inicial", null, tabTelaInicial, "Tela Inicial");
 		
 		JPanel tabAluno = new JPanel();
 		tabbedPane.addTab("Alunos", null, tabAluno, "Registro de alunos");
@@ -104,6 +106,7 @@ public class Tela extends JFrame {
 		
 		JTextArea taAlunoLista = new JTextArea();
 		scrollPaneAluno.setViewportView(taAlunoLista);
+		taAlunoLista.setEditable(false);	
 		
 		tfAlunoBusca = new JTextField();
 		tfAlunoBusca.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -234,8 +237,27 @@ public class Tela extends JFrame {
 		lblAreas.setBounds(10, 11, 117, 23);
 		listArea.add(lblAreas);
 		
+		JTextField tfAreaBusca = new JTextField();
+		tfAreaBusca.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfAreaBusca.setColumns(10);
+		tfAreaBusca.setBounds(291, 11, 294, 30);
+		listArea.add(tfAreaBusca);
+		
+		JButton btnBuscaArea = new JButton("Buscar");
+		btnBuscaArea.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnBuscaArea.setBounds(595, 15, 140, 23);
+		listArea.add(btnBuscaArea);
+		
+		JScrollPane scrollPaneArea = new JScrollPane();
+		scrollPaneArea.setBounds(20, 48, 714, 418);
+		listArea.add(scrollPaneArea);
+		
+		JTextArea taAreaLista = new JTextArea();
+		scrollPaneArea.setViewportView(taAreaLista);
+		
 		JButton btnNovarea = new JButton("Nova Área");
-		btnNovarea.setBounds(609, 477, 140, 23);
+		btnNovarea.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnNovarea.setBounds(595, 477, 140, 23);
 		btnNovarea.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -250,7 +272,8 @@ public class Tela extends JFrame {
 		formArea.add(lblNovaArea);
 		
 		JButton btnCancelaArea = new JButton("Cancela");
-		btnCancelaArea.setBounds(550, 477, 140, 23);
+		btnCancelaArea.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnCancelaArea.setBounds(460, 477, 140, 23);
 		btnCancelaArea.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -258,6 +281,66 @@ public class Tela extends JFrame {
 			}
 		});
 		formArea.add(btnCancelaArea);
+		
+		JLabel lblCodigoArea = new JLabel("Código: ");
+		lblCodigoArea.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblCodigoArea.setBounds(50, 70, 100, 30);
+		formArea.add(lblCodigoArea);
+		
+		JLabel lblNomeArea = new JLabel("Nome:");
+		lblNomeArea.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNomeArea.setBounds(50, 120, 100, 30);
+		formArea.add(lblNomeArea);
+		
+		JLabel lblDescArea = new JLabel("Breve descrição:");
+		lblDescArea.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblDescArea.setBounds(50, 170, 117, 30);
+		formArea.add(lblDescArea);
+		
+		JTextField tfNomeArea = new JTextField();
+		tfNomeArea.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfNomeArea.setColumns(10);
+		tfNomeArea.setBounds(160, 120, 485, 30);
+		formArea.add(tfNomeArea);
+		
+		JTextField tfCodigoArea = new JTextField();
+		tfCodigoArea.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfCodigoArea.setColumns(10);
+		tfCodigoArea.setBounds(160, 70, 485, 30);
+		formArea.add(tfCodigoArea);
+		
+		JTextArea taDescArea = new JTextArea();
+		taDescArea.setBounds(160, 175, 485, 82);
+		formArea.add(taDescArea);
+		
+		JButton btnGravaArea = new JButton("Gravar");
+		btnGravaArea.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnGravaArea.setBounds(609, 477, 140, 23);
+		formArea.add(btnGravaArea);
+		
+		JLabel lblSubareas = new JLabel("Subáreas:");
+		lblSubareas.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblSubareas.setBounds(50, 268, 117, 30);
+		formArea.add(lblSubareas);
+		
+		tfSubareas = new JTextField();
+		tfSubareas.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfSubareas.setColumns(10);
+		tfSubareas.setBounds(160, 275, 335, 30);
+		formArea.add(tfSubareas);
+		
+		JButton btnAdicionaSubarea = new JButton("Adicionar");
+		btnAdicionaSubarea.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnAdicionaSubarea.setBounds(505, 279, 140, 23);
+		formArea.add(btnAdicionaSubarea);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(160, 316, 485, 82);
+		formArea.add(scrollPane);
+		
+		JTextArea taSubareas = new JTextArea();
+		scrollPane.setViewportView(taSubareas);
+		taSubareas.setEditable(false);
 		
 		JPanel tabOrientacao = new JPanel();
 		tabbedPane.addTab("Orientações", null, tabOrientacao, "Registro de Orientações");
@@ -308,12 +391,15 @@ public class Tela extends JFrame {
 		
 		AlunoController ctrlAluno = new AlunoController(tfAlunoNome, tfAlunoRa, taAlunoLista, tfAlunoBusca);
 		
-		JPanel tabSubarea = new JPanel();
-		tabbedPane.addTab("Subáreas", null, tabSubarea, "Registro de subáreas");
-		
 		btnGravarAluno.addActionListener(ctrlAluno);
 		btnBuscaAluno.addActionListener(ctrlAluno);
 		btnUploadAluno.addActionListener(ctrlAluno);
+		
+		AreaController ctrlArea = new AreaController(tfCodigoArea, tfNomeArea, taDescArea, tfSubareas, taSubareas, taAreaLista, tfAreaBusca);
+		
+		btnGravaArea.addActionListener(ctrlArea);
+		btnAdicionaSubarea.addActionListener(ctrlArea);
+		btnBuscaArea.addActionListener(ctrlArea);
 	}
 	
 }
