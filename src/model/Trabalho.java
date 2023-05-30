@@ -7,11 +7,13 @@ public class Trabalho {
 	public String tema;
 	public String area;
 	public String subarea;
+	public String integrantes;
 	
 	@Override
 	public String toString() {
-		return (codigo + ";" + tipo + ";" + tema + ";" + area + ";" + subarea );
+		return (codigo + ";" + tipo + ";" + tema + ";" + area + ";" + subarea + ";" + integrantes);
 	}
+
 	
 	public int hashCodigo() {
 		return (Integer.parseInt(codigo) % 10);

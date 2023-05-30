@@ -35,6 +35,7 @@ public class Tela extends JFrame {
 	private JTextField tfTrabalhoTema;
 	private JTextField tfTrabalhoArea;
 	private JTextField tfTrabalhoSubarea;
+	private JTextField tfBuscaIntegrante;
 	private JTextField tfSubareas;
 	private JTextField tfOrientacaoBusca;
 	private JTextField tfTrabalhoOrientacao;
@@ -324,6 +325,37 @@ public class Tela extends JFrame {
 				btnGravarTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
 				btnGravarTrabalho.setBounds(609, 477, 140, 23);
 				formTrabalho.add(btnGravarTrabalho);
+				
+				tfBuscaIntegrante = new JTextField("");
+				tfBuscaIntegrante.setBounds(200, 320, 445, 30);
+				formTrabalho.add(tfBuscaIntegrante);
+
+				final JLabel lblNomeIntegrantes = new JLabel("");
+				lblNomeIntegrantes.setBounds(50, 360, 500, 30);
+				formTrabalho.add(lblNomeIntegrantes);
+				
+				
+		        JButton btnAdicionaIntegrante = new JButton("Adicionar");
+		        btnAdicionaIntegrante.setBounds(420, 360, 100, 25);
+		        formTrabalho.add(btnAdicionaIntegrante);
+		        btnAdicionaIntegrante.addActionListener(new ActionListener() {
+		        	@Override
+		            public void actionPerformed(ActionEvent e) {
+		        		TrabalhoController.buscarAluno(tfBuscaIntegrante, lblNomeIntegrantes);
+		            }
+				});
+		        
+
+		        JButton btnRemoveIntegrante = new JButton("Remover");
+		        btnRemoveIntegrante.setBounds(545, 360, 100, 25);
+		        formTrabalho.add(btnRemoveIntegrante);
+		        btnRemoveIntegrante.addActionListener(new ActionListener() {
+		        	@Override
+		            public void actionPerformed(ActionEvent e) {
+		                TrabalhoController.removerAluno(tfBuscaIntegrante.getText(), lblNomeIntegrantes);
+		            }
+		        
+		        });
 		
 		JPanel tabArea = new JPanel();
 		tabbedPane.addTab("Áreas", null, tabArea, "Registro de áreas");
@@ -609,7 +641,7 @@ public class Tela extends JFrame {
 		btnLimpaBuscaAluno.addActionListener(ctrlAluno);
 		
 		TrabalhoController ctrlTrabalho = new TrabalhoController(tfTrabalhoCodigo, tfTrabalhoTipo, 
-		tfTrabalhoTema, tfTrabalhoArea,  tfTrabalhoSubarea);
+		tfTrabalhoTema, tfTrabalhoArea,  tfTrabalhoSubarea, lblNomeIntegrantes);
 		
 		btnGravarTrabalho.addActionListener(ctrlTrabalho);
 		btnUploadTrabalho.addActionListener(ctrlTrabalho);

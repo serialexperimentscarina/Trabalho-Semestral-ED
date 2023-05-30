@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -27,18 +28,21 @@ public class TrabalhoController implements ActionListener {
 	private JTextField tfTrabalhoTema;
 	private JTextField tfTrabalhoArea;
 	private JTextField tfTrabalhoSubarea;
+	private JLabel lblBuscaIntegrante;
 	
 	private TabelaGrupoCodigoController tabelaCodigo;
 	private TabelaGrupoSubareaController tabelaSubarea;
 
 	public TrabalhoController(JTextField tfTrabalhoCodigo, JTextField tfTrabalhoTipo, JTextField tfTrabalhoTema,
-			JTextField tfTrabalhoArea, JTextField tfTrabalhoSubarea) {
+			JTextField tfTrabalhoArea, JTextField tfTrabalhoSubarea, JLabel lblBuscaIntegrante) {
 		super();
 		this.tfTrabalhoCodigo = tfTrabalhoCodigo;
 		this.tfTrabalhoTipo = tfTrabalhoTipo;
 		this.tfTrabalhoTema = tfTrabalhoTema;
 		this.tfTrabalhoArea = tfTrabalhoArea;
 		this.tfTrabalhoSubarea = tfTrabalhoSubarea;
+		this.lblBuscaIntegrante = lblBuscaIntegrante;
+	
 		
 		tabelaCodigo = new TabelaGrupoCodigoController();
 		tabelaSubarea = new TabelaGrupoSubareaController();
@@ -76,17 +80,17 @@ public class TrabalhoController implements ActionListener {
 		trabalho.tema = tfTrabalhoTema.getText();
 		trabalho.area = tfTrabalhoArea.getText();
 		trabalho.subarea = tfTrabalhoSubarea.getText();
-
+		trabalho.integrantes = lblBuscaIntegrante.getText();
+		
+		// Terminar checagem dos campos
 		if (!trabalho.codigo.equals("") && (!trabalho.tipo.equals("") && trabalho.codigo.matches("[0-9]+"))) {
 			gravaTrabalho(trabalho.toString());
-			tabelaCodigo.adiciona(trabalho);
-			tabelaSubarea.adiciona(trabalho);
-
 			tfTrabalhoCodigo.setText("");
 			tfTrabalhoTipo.setText("");
 			tfTrabalhoTema.setText("");
 			tfTrabalhoArea.setText("");
 			tfTrabalhoSubarea.setText("");
+			lblBuscaIntegrante.setText("");
 		} else {
 			JOptionPane.showMessageDialog(null, "Um ou mais campos vazios ou possuem caracteres inválidos", "ERRO!",
 					JOptionPane.ERROR_MESSAGE);
@@ -226,6 +230,62 @@ public class TrabalhoController implements ActionListener {
 			isr.close();
 			fis.close();
 		}
+	}
+	
+	public static void buscarAluno(JTextField tfBuscaAluno, JLabel lblBuscaIntegrante) {
+	    String nomeAluno = tfBuscaAluno.getText();
+	    String path = System.getProperty("user.home") + File.separator + "SistemaTCC" + File.separator + "aluno.csv";
+	    StringBuilder listaDeNomes = new StringBuilder(lblBuscaIntegrante.getText());
+	    
+	    try {
+	    	FileReader fileReader = new FileReader(path);
+	    	BufferedReader reader = new BufferedReader(fileReader);
+	        String line;
+
+	        while ((line = reader.readLine()) != null) {
+	            if (line.contains(nomeAluno)) {
+	                if (!lblBuscaIntegrante.getText().contains(nomeAluno)) {
+	                    if (listaDeNomes.length() > 0) {
+	                    	listaDeNomes.append(", ");
+	                    }
+	                    listaDeNomes.append(nomeAluno);
+	                    if (listaDeNomes.length() > 0) {
+	                    	lblBuscaIntegrante.setText(listaDeNomes.toString());
+	                    	System.out.println(listaDeNomes);
+	                    	JOptionPane.showMessageDialog(null, "Aluno adicionado com sucesso.");
+	                    } else {
+	                    	JOptionPane.showMessageDialog(null, "Nenhum aluno encontrado com esse nome.");
+	                    }
+	                } else {
+		            	JOptionPane.showMessageDialog(null, "Aluno já está adicionado neste trabalho.");
+		            }
+	            } 
+	        }
+	    } catch (IOException ex) {
+	        ex.printStackTrace();
+	    }
+	}
+	
+	public static void removerAluno(String nomeAluno, JLabel lblBuscaIntegrante) {
+	    String listaDeNomes = lblBuscaIntegrante.getText();
+	    StringBuilder listaDeNomesAtualizada = new StringBuilder();
+
+	    if (listaDeNomes.contains(nomeAluno)) {
+	        String[] nome = listaDeNomes.split(", ");
+	        for (String nomes : nome) {
+	            if (!nomes.equals(nomeAluno)) {
+	                if (listaDeNomesAtualizada.length() > 0) {
+	                	listaDeNomesAtualizada.append(", ");
+	                } else {
+	                	JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
+	                }
+	                listaDeNomesAtualizada.append(nomes);
+	            } else {
+	            	lblBuscaIntegrante.setText(listaDeNomesAtualizada.toString());
+	    	        JOptionPane.showMessageDialog(null, "Aluno removido com sucesso.");
+	            }
+	        }
+	    }
 	}
 
 }
