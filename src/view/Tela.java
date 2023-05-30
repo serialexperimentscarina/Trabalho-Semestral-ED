@@ -93,7 +93,7 @@ public class Tela extends JFrame {
 		
 		JLabel lblAlunos = new JLabel("Alunos");
 		lblAlunos.setFont(new Font("Tahoma", Font.BOLD, 18));
-		lblAlunos.setBounds(10, 11, 294, 23);
+		lblAlunos.setBounds(10, 11, 122, 23);
 		listAluno.add(lblAlunos);
 		
 		JButton btnNovoAluno = new JButton("Novo Aluno");
@@ -116,12 +116,14 @@ public class Tela extends JFrame {
 		taAlunoLista.setEditable(false);	
 		
 		tfAlunoBusca = new JTextField();
+		tfAlunoBusca.setToolTipText("Pesquisar por RA");
 		tfAlunoBusca.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tfAlunoBusca.setColumns(10);
 		tfAlunoBusca.setBounds(292, 9, 294, 30);
 		listAluno.add(tfAlunoBusca);
 		
 		JButton btnBuscaAluno = new JButton("Buscar");
+		btnBuscaAluno.setToolTipText("Pesquisar por RA");
 		btnBuscaAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnBuscaAluno.setBounds(596, 13, 140, 23);
 		listAluno.add(btnBuscaAluno);
@@ -341,12 +343,14 @@ public class Tela extends JFrame {
 		listArea.add(lblAreas);
 		
 		JTextField tfAreaBusca = new JTextField();
+		tfAreaBusca.setToolTipText("Pesquisar por nome de área");
 		tfAreaBusca.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		tfAreaBusca.setColumns(10);
 		tfAreaBusca.setBounds(291, 11, 294, 30);
 		listArea.add(tfAreaBusca);
 		
 		JButton btnBuscaArea = new JButton("Buscar");
+		btnBuscaArea.setToolTipText("Pesquisar por nome de área");
 		btnBuscaArea.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnBuscaArea.setBounds(595, 15, 140, 23);
 		listArea.add(btnBuscaArea);
@@ -494,9 +498,15 @@ public class Tela extends JFrame {
 		
 		AlunoController ctrlAluno = new AlunoController(tfAlunoNome, tfAlunoRa, taAlunoLista, tfAlunoBusca);
 		
+		JButton btnLimpaBuscaAluno = new JButton("Limpar Busca");
+		btnLimpaBuscaAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnLimpaBuscaAluno.setBounds(142, 13, 140, 23);
+		listAluno.add(btnLimpaBuscaAluno);
+		
 		btnGravarAluno.addActionListener(ctrlAluno);
 		btnBuscaAluno.addActionListener(ctrlAluno);
 		btnUploadAluno.addActionListener(ctrlAluno);
+		btnLimpaBuscaAluno.addActionListener(ctrlAluno);
 		
 		TrabalhoController ctrlTrabalho = new TrabalhoController(tfTrabalhoCodigo, tfTrabalhoTipo, 
 		tfTrabalhoTema, tfTrabalhoArea,  tfTrabalhoSubarea);
@@ -506,9 +516,15 @@ public class Tela extends JFrame {
 		
 		AreaController ctrlArea = new AreaController(tfCodigoArea, tfNomeArea, taDescArea, tfSubareas, taSubareas, taAreaLista, tfAreaBusca);
 		
+		JButton btnLimpaBuscaArea = new JButton("Limpar Busca");
+		btnLimpaBuscaArea.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnLimpaBuscaArea.setBounds(141, 15, 140, 23);
+		listArea.add(btnLimpaBuscaArea);
+		
 		btnGravaArea.addActionListener(ctrlArea);
 		btnAdicionaSubarea.addActionListener(ctrlArea);
 		btnBuscaArea.addActionListener(ctrlArea);
+		btnLimpaBuscaArea.addActionListener(ctrlArea);
 	}
 	
 }

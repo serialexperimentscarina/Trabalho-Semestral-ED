@@ -34,6 +34,12 @@ public class AreaController implements ActionListener{
 		this.taSubareas = taSubareas;
 		this.taAreaLista = taAreaLista;
 		this.tfAreaBusca = tfAreaBusca;
+		
+		try {
+			atualizaLista();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -49,6 +55,9 @@ public class AreaController implements ActionListener{
 					break;
 				case "Buscar":
 					buscar();	
+					break;
+				case "Limpar Busca":
+					atualizaLista();	
 					break;
 				default:
 					break;
@@ -168,6 +177,31 @@ public class AreaController implements ActionListener{
 			fis.close();
 		}
 		return area;
+	}
+	
+	private void atualizaLista() throws Exception {
+		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
+		File arq = new File(path, "area.csv");
+		
+		if (arq.exists() && arq.isFile()) {
+			FileInputStream fis = new FileInputStream(arq);
+			InputStreamReader isr = new InputStreamReader(fis);
+			BufferedReader buffer = new BufferedReader(isr);
+			
+			StringBuffer listaDeAreas = new StringBuffer("");
+			String linha = buffer.readLine();
+			while (linha != null) {
+				String[] vetLinha = linha.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+				String listaSubareas = (", Subáreas: " + String.join(",", vetLinha[3].substring(1, vetLinha[3].length() - 1).split(";")));
+				listaDeAreas.append("Código: " + vetLinha[0] + "; Área: " + vetLinha[1] + "; Descrição: " + vetLinha[2] + listaSubareas + System.getProperty("line.separator"));
+				linha = buffer.readLine();
+			}
+			buffer.close();
+			isr.close();
+			fis.close();
+			
+			taAreaLista.setText(listaDeAreas.toString());
+		}
 	}
 	
 	

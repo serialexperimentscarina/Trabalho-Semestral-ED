@@ -29,6 +29,12 @@ public class AlunoController implements ActionListener{
 		this.tfAlunoRa = tfAlunoRa;
 		this.taAlunoLista = taAlunoLista;
 		this.tfAlunoBusca = tfAlunoBusca;
+		
+		try {
+			atualizaLista();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -44,6 +50,9 @@ public class AlunoController implements ActionListener{
 					break;
 				case "Upload por CSV":
 					upload();	
+					break;
+				case "Limpar Busca":
+					atualizaLista();	
 					break;
 				default:
 					break;
@@ -171,6 +180,30 @@ public class AlunoController implements ActionListener{
 			
 			JOptionPane.showMessageDialog(null, "Upload feito com sucesso", "Upload concluído", JOptionPane.PLAIN_MESSAGE);
 			
+		}
+	}
+	
+	private void atualizaLista() throws Exception {
+		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
+		File arq = new File(path, "aluno.csv");
+		
+		if (arq.exists() && arq.isFile()) {
+			FileInputStream fis = new FileInputStream(arq);
+			InputStreamReader isr = new InputStreamReader(fis);
+			BufferedReader buffer = new BufferedReader(isr);
+			
+			StringBuffer listaDeAlunos = new StringBuffer("");
+			String linha = buffer.readLine();
+			while (linha != null) {
+				String[] vetLinha = linha.split(";");
+				listaDeAlunos.append("Nome: " + vetLinha[0] + "; RA: " + vetLinha[1] + System.getProperty("line.separator"));
+				linha = buffer.readLine();
+			}
+			buffer.close();
+			isr.close();
+			fis.close();
+			
+			taAlunoLista.setText(listaDeAlunos.toString());
 		}
 	}
 	
