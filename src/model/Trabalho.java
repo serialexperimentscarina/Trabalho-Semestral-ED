@@ -12,5 +12,13 @@ public class Trabalho {
 	public String toString() {
 		return (codigo + ";" + tipo + ";" + tema + ";" + area + ";" + subarea );
 	}
+	
+	public int hashCodigo() {
+		return (Integer.parseInt(codigo) % 10);
+	}
+	
+	public int hashSubarea() {
+		return (subarea.toLowerCase().charAt(0) - 97);
+	}
 
 }
