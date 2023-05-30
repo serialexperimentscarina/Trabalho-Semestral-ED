@@ -29,12 +29,16 @@ public class TrabalhoController implements ActionListener {
 	private JTextField tfTrabalhoArea;
 	private JTextField tfTrabalhoSubarea;
 	private JLabel lblBuscaIntegrante;
+	private JTextField tfTrabalhoBusca;
+	private JTextArea taTrabalhoLista;
 	
 	private TabelaGrupoCodigoController tabelaCodigo;
 	private TabelaGrupoSubareaController tabelaSubarea;
+	
 
 	public TrabalhoController(JTextField tfTrabalhoCodigo, JTextField tfTrabalhoTipo, JTextField tfTrabalhoTema,
-			JTextField tfTrabalhoArea, JTextField tfTrabalhoSubarea, JLabel lblBuscaIntegrante) {
+			JTextField tfTrabalhoArea, JTextField tfTrabalhoSubarea, JLabel lblBuscaIntegrante, JTextField tfTrabalhoBusca
+			, JTextArea taTrabalhoLista) {
 		super();
 		this.tfTrabalhoCodigo = tfTrabalhoCodigo;
 		this.tfTrabalhoTipo = tfTrabalhoTipo;
@@ -42,6 +46,8 @@ public class TrabalhoController implements ActionListener {
 		this.tfTrabalhoArea = tfTrabalhoArea;
 		this.tfTrabalhoSubarea = tfTrabalhoSubarea;
 		this.lblBuscaIntegrante = lblBuscaIntegrante;
+		this.tfTrabalhoBusca = tfTrabalhoBusca;
+		this.taTrabalhoLista = taTrabalhoLista;
 	
 		
 		tabelaCodigo = new TabelaGrupoCodigoController();
@@ -51,6 +57,7 @@ public class TrabalhoController implements ActionListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	@Override
@@ -61,8 +68,14 @@ public class TrabalhoController implements ActionListener {
 				case "Gravar":
 					gravar();	
 					break;
+				case "Buscar":
+					buscar();	
+					break;
 				case "Upload por CSV":
 					upload();	
+					break;
+				case "Limpar Busca":
+					gerarListTrabalho(taTrabalhoLista);;	
 					break;
 				default:
 					break;
@@ -72,6 +85,49 @@ public class TrabalhoController implements ActionListener {
 		}
 		
 	}
+	
+	private void buscar() throws Exception {
+		Trabalho trabalho = new Trabalho();
+		trabalho.codigo = tfTrabalhoBusca.getText();
+		
+		trabalho = buscaTrabalho(trabalho);
+		if (trabalho.tipo != null) {
+			taTrabalhoLista.setText(trabalho.codigo + ";" + trabalho.tipo + ";" + trabalho.tema + ";" + trabalho.area + ";" + trabalho.subarea + ";" + trabalho.integrantes);
+		} else {
+			JOptionPane.showMessageDialog(null, "Trabalho não encontrado!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private Trabalho buscaTrabalho(Trabalho trabalho) throws Exception {
+		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
+		File arq = new File(path, "trabalho.csv");
+		
+		if (arq.exists() && arq.isFile()) {
+			FileInputStream fis = new FileInputStream(arq);
+			InputStreamReader isr = new InputStreamReader(fis);
+			BufferedReader buffer = new BufferedReader(isr);
+			
+			String linha = buffer.readLine();
+			while (linha != null) {
+				String[] vetLinha = linha.split(";");
+				if (vetLinha[0].equals(trabalho.codigo)) {
+					trabalho.codigo = vetLinha[0];
+					trabalho.tipo = vetLinha[1];
+					trabalho.tema = vetLinha[2];
+					trabalho.area = vetLinha[3];
+					trabalho.subarea = vetLinha[4];
+					trabalho.integrantes = vetLinha[5];
+					break;
+				}
+				
+				linha = buffer.readLine();
+			}
+			buffer.close();
+			isr.close();
+			fis.close();
+		}
+		return trabalho;
+	}	
 
 	private void gravar() throws Exception {
 		Trabalho trabalho = new Trabalho();
@@ -117,13 +173,14 @@ public class TrabalhoController implements ActionListener {
 		fw.close();
 
 	}
+	
 
 	public static void gerarListTrabalho(JTextArea taTrabalhoLista) {
+		taTrabalhoLista.setText("");
 		try {
 			String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
 			File arq = new File(path, "trabalho.csv");
 			if (arq.exists()) {
-
 				BufferedReader reader = new BufferedReader(new FileReader(arq));
 				String line;
 				while ((line = reader.readLine()) != null) {
@@ -222,6 +279,7 @@ public class TrabalhoController implements ActionListener {
 				trabalho.tema = vetLinha[2];
 				trabalho.area = vetLinha[3];
 				trabalho.subarea = vetLinha[4];
+				trabalho.integrantes = vetLinha[5];
 				tabelaCodigo.adiciona(trabalho);
 				tabelaSubarea.adiciona(trabalho);
 				linha = buffer.readLine();

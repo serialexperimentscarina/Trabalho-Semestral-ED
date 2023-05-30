@@ -212,17 +212,18 @@ public class Tela extends JFrame {
 				TrabalhoController.gerarListTrabalho(taTrabalhoLista);
 				
 				
-				/*
-				tfTrabalhoBusca = new JTextField();
+				
+				JTextField tfTrabalhoBusca = new JTextField();
 				tfTrabalhoBusca.setFont(new Font("Tahoma", Font.PLAIN, 14));
 				tfTrabalhoBusca.setColumns(10);
 				tfTrabalhoBusca.setBounds(292, 9, 294, 30);
 				listTrabalho.add(tfTrabalhoBusca);
 				
 				JButton btnBuscaTrabalho = new JButton("Buscar");
+				btnBuscaTrabalho.setToolTipText("Pesquisar por código do trabalho");
 				btnBuscaTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
-				btnBuscaTrabalho.setBounds(596, 13, 140, 23);
-				listTrabalho.add(btnBuscaTrabalho);*/
+				btnBuscaTrabalho.setBounds(594, 15, 140, 23);
+				listTrabalho.add(btnBuscaTrabalho);
 				
 				JLabel lblTrabalhos = new JLabel("Trabalhos");
 				lblTrabalhos.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -356,6 +357,11 @@ public class Tela extends JFrame {
 		            }
 		        
 		        });
+		        
+				JButton btnLimpaBuscaTrabalho = new JButton("Limpar Busca");
+				btnLimpaBuscaTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
+				btnLimpaBuscaTrabalho.setBounds(140, 15, 140, 23);
+				listTrabalho.add(btnLimpaBuscaTrabalho);
 		
 		JPanel tabArea = new JPanel();
 		tabbedPane.addTab("Áreas", null, tabArea, "Registro de áreas");
@@ -641,10 +647,12 @@ public class Tela extends JFrame {
 		btnLimpaBuscaAluno.addActionListener(ctrlAluno);
 		
 		TrabalhoController ctrlTrabalho = new TrabalhoController(tfTrabalhoCodigo, tfTrabalhoTipo, 
-		tfTrabalhoTema, tfTrabalhoArea,  tfTrabalhoSubarea, lblNomeIntegrantes);
+		tfTrabalhoTema, tfTrabalhoArea,  tfTrabalhoSubarea, lblNomeIntegrantes, tfTrabalhoBusca, taTrabalhoLista);
 		
 		btnGravarTrabalho.addActionListener(ctrlTrabalho);
 		btnUploadTrabalho.addActionListener(ctrlTrabalho);
+		btnBuscaTrabalho.addActionListener(ctrlTrabalho);
+		btnLimpaBuscaTrabalho.addActionListener(ctrlTrabalho);
 		
 		AreaController ctrlArea = new AreaController(tfCodigoArea, tfNomeArea, taDescArea, tfSubareas, taSubareas, taAreaLista, tfAreaBusca);
 		
