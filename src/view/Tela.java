@@ -36,6 +36,11 @@ public class Tela extends JFrame {
 	private JTextField tfTrabalhoArea;
 	private JTextField tfTrabalhoSubarea;
 	private JTextField tfSubareas;
+	private JTextField tfOrientacaoBusca;
+	private JTextField tfTrabalhoOrientacao;
+	private JTextField tfDiaOrientacao;
+	private JTextField tfMesOrientacao;
+	private JTextField tfAnoOrientacao;
 	
 
 	public static void main(String[] args) {
@@ -472,7 +477,8 @@ public class Tela extends JFrame {
 		listOrientacao.add(lblOrientacoes);
 		
 		JButton btnNovaOrientacao = new JButton("Nova Orientação");
-		btnNovaOrientacao.setBounds(609, 477, 140, 23);
+		btnNovaOrientacao.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnNovaOrientacao.setBounds(594, 476, 140, 23);
 		btnNovaOrientacao.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -481,13 +487,39 @@ public class Tela extends JFrame {
 		});
 		listOrientacao.add(btnNovaOrientacao);
 		
+		JButton btnLimpaBuscaOrientacao = new JButton("Limpar Busca");
+		btnLimpaBuscaOrientacao.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnLimpaBuscaOrientacao.setBounds(140, 15, 140, 23);
+		listOrientacao.add(btnLimpaBuscaOrientacao);
+		
+		JScrollPane scrollPaneOrientacao = new JScrollPane();
+		scrollPaneOrientacao.setBounds(20, 49, 712, 416);
+		listOrientacao.add(scrollPaneOrientacao);
+		
+		JTextArea taOrientacaoLista = new JTextArea();
+		scrollPaneOrientacao.setViewportView(taOrientacaoLista);
+		
+		tfOrientacaoBusca = new JTextField();
+		tfOrientacaoBusca.setToolTipText("Pesquisar por nome de área");
+		tfOrientacaoBusca.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfOrientacaoBusca.setColumns(10);
+		tfOrientacaoBusca.setBounds(290, 11, 294, 30);
+		listOrientacao.add(tfOrientacaoBusca);
+		
+		JButton btnBuscaOrientacao = new JButton("Buscar");
+		btnBuscaOrientacao.setToolTipText("Pesquisar por nome de área");
+		btnBuscaOrientacao.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnBuscaOrientacao.setBounds(594, 15, 140, 23);
+		listOrientacao.add(btnBuscaOrientacao);
+		
 		JLabel lblNovaOrientacao = new JLabel("Nova Orientação");
 		lblNovaOrientacao.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblNovaOrientacao.setBounds(10, 11, 248, 23);
 		formOrientacao.add(lblNovaOrientacao);
 		
 		JButton btnCancelaOrientacao = new JButton("Cancela");
-		btnCancelaOrientacao.setBounds(550, 477, 140, 23);
+		btnCancelaOrientacao.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnCancelaOrientacao.setBounds(460, 477, 140, 23);
 		btnCancelaOrientacao.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -495,6 +527,74 @@ public class Tela extends JFrame {
 			}
 		});
 		formOrientacao.add(btnCancelaOrientacao);
+		
+		JButton btnGravaOrientacao = new JButton("Gravar");
+		btnGravaOrientacao.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnGravaOrientacao.setBounds(609, 477, 140, 23);
+		formOrientacao.add(btnGravaOrientacao);
+		
+		JLabel lblTrabalho = new JLabel("Trabalho:");
+		lblTrabalho.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblTrabalho.setBounds(50, 70, 100, 30);
+		formOrientacao.add(lblTrabalho);
+		
+		tfTrabalhoOrientacao = new JTextField();
+		tfTrabalhoOrientacao.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfTrabalhoOrientacao.setColumns(10);
+		tfTrabalhoOrientacao.setBounds(160, 70, 248, 30);
+		formOrientacao.add(tfTrabalhoOrientacao);
+		
+		JButton btnBuscarTrabalho = new JButton("Buscar");
+		btnBuscarTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnBuscarTrabalho.setBounds(418, 75, 140, 23);
+		formOrientacao.add(btnBuscarTrabalho);
+		
+		JLabel lblOrientaoAssociada = new JLabel("Orientação associada à:");
+		lblOrientaoAssociada.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblOrientaoAssociada.setBounds(60, 111, 292, 30);
+		formOrientacao.add(lblOrientaoAssociada);
+		
+		JLabel lblDataOrientacao = new JLabel("Data:");
+		lblDataOrientacao.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblDataOrientacao.setBounds(50, 152, 100, 30);
+		formOrientacao.add(lblDataOrientacao);
+		
+		tfDiaOrientacao = new JTextField();
+		tfDiaOrientacao.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfDiaOrientacao.setColumns(10);
+		tfDiaOrientacao.setBounds(160, 152, 55, 30);
+		formOrientacao.add(tfDiaOrientacao);
+		
+		JLabel lblBarra1 = new JLabel("/");
+		lblBarra1.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblBarra1.setBounds(225, 152, 13, 30);
+		formOrientacao.add(lblBarra1);
+		
+		tfMesOrientacao = new JTextField();
+		tfMesOrientacao.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfMesOrientacao.setColumns(10);
+		tfMesOrientacao.setBounds(236, 152, 55, 30);
+		formOrientacao.add(tfMesOrientacao);
+		
+		JLabel lblBarra2 = new JLabel("/");
+		lblBarra2.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblBarra2.setBounds(301, 152, 24, 30);
+		formOrientacao.add(lblBarra2);
+		
+		tfAnoOrientacao = new JTextField();
+		tfAnoOrientacao.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfAnoOrientacao.setColumns(10);
+		tfAnoOrientacao.setBounds(312, 152, 96, 30);
+		formOrientacao.add(tfAnoOrientacao);
+		
+		JLabel lblPontosOrientacao = new JLabel("Pontos:");
+		lblPontosOrientacao.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblPontosOrientacao.setBounds(50, 205, 100, 30);
+		formOrientacao.add(lblPontosOrientacao);
+		
+		JTextArea taPontosOrientacao = new JTextArea();
+		taPontosOrientacao.setBounds(160, 210, 398, 194);
+		formOrientacao.add(taPontosOrientacao);
 		
 		AlunoController ctrlAluno = new AlunoController(tfAlunoNome, tfAlunoRa, taAlunoLista, tfAlunoBusca);
 		
@@ -526,5 +626,4 @@ public class Tela extends JFrame {
 		btnBuscaArea.addActionListener(ctrlArea);
 		btnLimpaBuscaArea.addActionListener(ctrlArea);
 	}
-	
 }
