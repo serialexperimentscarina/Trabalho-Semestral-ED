@@ -8,5 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/ListaObject.jar"/>
 	<classpathentry kind="lib" path="lib/ListaStrings.jar"/>
+	<classpathentry kind="lib" path="lib/PilhaObject.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
