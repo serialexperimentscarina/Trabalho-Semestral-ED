@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,6 +27,9 @@ public class TrabalhoController implements ActionListener {
 	private JTextField tfTrabalhoTema;
 	private JTextField tfTrabalhoArea;
 	private JTextField tfTrabalhoSubarea;
+	
+	private TabelaGrupoCodigoController tabelaCodigo;
+	private TabelaGrupoSubareaController tabelaSubarea;
 
 	public TrabalhoController(JTextField tfTrabalhoCodigo, JTextField tfTrabalhoTipo, JTextField tfTrabalhoTema,
 			JTextField tfTrabalhoArea, JTextField tfTrabalhoSubarea) {
@@ -35,6 +39,14 @@ public class TrabalhoController implements ActionListener {
 		this.tfTrabalhoTema = tfTrabalhoTema;
 		this.tfTrabalhoArea = tfTrabalhoArea;
 		this.tfTrabalhoSubarea = tfTrabalhoSubarea;
+		
+		tabelaCodigo = new TabelaGrupoCodigoController();
+		tabelaSubarea = new TabelaGrupoSubareaController();
+		try {
+			populaTabelas();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -67,6 +79,8 @@ public class TrabalhoController implements ActionListener {
 
 		if (!trabalho.codigo.equals("") && (!trabalho.tipo.equals("") && trabalho.codigo.matches("[0-9]+"))) {
 			gravaTrabalho(trabalho.toString());
+			tabelaCodigo.adiciona(trabalho);
+			tabelaSubarea.adiciona(trabalho);
 
 			tfTrabalhoCodigo.setText("");
 			tfTrabalhoTipo.setText("");
@@ -163,6 +177,8 @@ public class TrabalhoController implements ActionListener {
 					trabalho.area = vetLinha[3];
 					trabalho.subarea = vetLinha[4];
 					listaTrabalho.addFirst(trabalho);
+					tabelaCodigo.adiciona(trabalho);
+					tabelaSubarea.adiciona(trabalho);
 				} else {
 					JOptionPane.showMessageDialog(null, "Um ou mais campos inválidos passados por CSV, verifique seu arquivo e tente novamente", "ERRO!", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -181,6 +197,34 @@ public class TrabalhoController implements ActionListener {
 			
 			JOptionPane.showMessageDialog(null, "Upload feito com sucesso", "Upload concluído", JOptionPane.PLAIN_MESSAGE);
 			
+		}
+	}
+	
+	private void populaTabelas() throws Exception {
+		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
+		File arq = new File(path, "trabalho.csv");
+		
+		if (arq.exists() && arq.isFile()) {
+			FileInputStream fis = new FileInputStream(arq);
+			InputStreamReader isr = new InputStreamReader(fis);
+			BufferedReader buffer = new BufferedReader(isr);
+			
+			String linha = buffer.readLine();
+			while (linha != null) {
+				String[] vetLinha = linha.split(";");
+				Trabalho trabalho = new Trabalho();
+				trabalho.codigo = vetLinha[0];
+				trabalho.tipo = vetLinha[1];
+				trabalho.tema = vetLinha[2];
+				trabalho.area = vetLinha[3];
+				trabalho.subarea = vetLinha[4];
+				tabelaCodigo.adiciona(trabalho);
+				tabelaSubarea.adiciona(trabalho);
+				linha = buffer.readLine();
+			}
+			buffer.close();
+			isr.close();
+			fis.close();
 		}
 	}
 
