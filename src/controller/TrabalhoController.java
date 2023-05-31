@@ -75,7 +75,7 @@ public class TrabalhoController implements ActionListener {
 					upload();	
 					break;
 				case "Limpar Busca":
-					gerarListTrabalho(taTrabalhoLista);;	
+					gerarListTrabalho(taTrabalhoLista);	
 					break;
 				default:
 					break;
@@ -96,6 +96,7 @@ public class TrabalhoController implements ActionListener {
 		} else {
 			JOptionPane.showMessageDialog(null, "Trabalho não encontrado!", "ERRO!", JOptionPane.ERROR_MESSAGE);
 		}
+		
 	}
 	
 	private Trabalho buscaTrabalho(Trabalho trabalho) throws Exception {

@@ -9,5 +9,10 @@ public class Aluno {
 	public String toString() {
 		return (nome + ";" + ra);
 	}
+	
+	@Override
+	public int hashCode() {
+		return Integer.parseInt(ra.substring(ra.length() - 1));
+	}
 
 }

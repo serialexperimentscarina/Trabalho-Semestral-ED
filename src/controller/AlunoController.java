@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -23,6 +24,8 @@ public class AlunoController implements ActionListener{
 	private JTextArea taAlunoLista;
 	private JTextField tfAlunoBusca;
 	
+	public static TabelaAlunoController tabelaEspalhamentoAluno;
+	
 	public AlunoController(JTextField tfAlunoNome, JTextField tfAlunoRa, JTextArea taAlunoLista,
 			JTextField tfAlunoBusca) {
 		this.tfAlunoNome = tfAlunoNome;
@@ -30,7 +33,10 @@ public class AlunoController implements ActionListener{
 		this.taAlunoLista = taAlunoLista;
 		this.tfAlunoBusca = tfAlunoBusca;
 		
+		tabelaEspalhamentoAluno = new TabelaAlunoController();
+		
 		try {
+			populaTabela();
 			atualizaLista();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -70,6 +76,7 @@ public class AlunoController implements ActionListener{
 		
 		if (!aluno.nome.equals("") && (!aluno.ra.equals("") && aluno.ra.matches("[0-9]+"))) {
 			gravaAluno(aluno.toString());
+			tabelaEspalhamentoAluno.adiciona(aluno);
 			
 			tfAlunoNome.setText("");
 			tfAlunoRa.setText("");
@@ -100,47 +107,22 @@ public class AlunoController implements ActionListener{
 		
 	}
 
-
-
 	private void buscar() throws Exception {
 		Aluno aluno = new Aluno();
 		aluno.ra = tfAlunoBusca.getText();
 		
-		aluno = buscaAluno(aluno);
-		if (aluno.nome != null) {
+		if (aluno.ra.equals("") || !aluno.ra.matches("[0-9]+")) {
+			JOptionPane.showMessageDialog(null, "RA Inválido!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
+		aluno = tabelaEspalhamentoAluno.busca(aluno);
+		if (aluno != null) {
 			taAlunoLista.setText("Nome: " + aluno.nome + "; RA: " + aluno.ra);
 		} else {
 			JOptionPane.showMessageDialog(null, "Aluno não encontrado!", "ERRO!", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-
-
-
-	private Aluno buscaAluno(Aluno aluno) throws Exception {
-		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
-		File arq = new File(path, "aluno.csv");
-		
-		if (arq.exists() && arq.isFile()) {
-			FileInputStream fis = new FileInputStream(arq);
-			InputStreamReader isr = new InputStreamReader(fis);
-			BufferedReader buffer = new BufferedReader(isr);
-			
-			String linha = buffer.readLine();
-			while (linha != null) {
-				String[] vetLinha = linha.split(";");
-				if (vetLinha[1].equals(aluno.ra)) {
-					aluno.nome = vetLinha[0];
-					break;
-				}
-				
-				linha = buffer.readLine();
-			}
-			buffer.close();
-			isr.close();
-			fis.close();
-		}
-		return aluno;
-	}	
 	
 	private void upload() throws Exception {
 		UploadController uploadCrtl = new UploadController();
@@ -174,7 +156,9 @@ public class AlunoController implements ActionListener{
 			
 			//Se todos os alunos passados forem válidos, adiciona eles ao sistema
 			while (!listaAluno.isEmpty()) {
-				gravaAluno(listaAluno.get(0).toString());
+				Aluno aluno = (Aluno) listaAluno.get(0);
+				gravaAluno(aluno.toString());
+				tabelaEspalhamentoAluno.adiciona(aluno);
 				listaAluno.removeFirst();
 			}
 			
@@ -184,6 +168,10 @@ public class AlunoController implements ActionListener{
 	}
 	
 	private void atualizaLista() throws Exception {
+		taAlunoLista.setText(tabelaEspalhamentoAluno.lista());
+	}
+	
+	private void populaTabela() throws Exception {
 		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
 		File arq = new File(path, "aluno.csv");
 		
@@ -196,14 +184,15 @@ public class AlunoController implements ActionListener{
 			String linha = buffer.readLine();
 			while (linha != null) {
 				String[] vetLinha = linha.split(";");
-				listaDeAlunos.append("Nome: " + vetLinha[0] + "; RA: " + vetLinha[1] + System.getProperty("line.separator"));
+				Aluno aluno = new Aluno();
+				aluno.nome = vetLinha[0];
+				aluno.ra = vetLinha[1];
+				tabelaEspalhamentoAluno.adiciona(aluno);
 				linha = buffer.readLine();
 			}
 			buffer.close();
 			isr.close();
 			fis.close();
-			
-			taAlunoLista.setText(listaDeAlunos.toString());
 		}
 	}
 	
