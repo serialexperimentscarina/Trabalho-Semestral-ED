@@ -31,14 +31,15 @@ public class TrabalhoController implements ActionListener {
 	private JLabel lblBuscaIntegrante;
 	private JTextField tfTrabalhoBusca;
 	private JTextArea taTrabalhoLista;
-	
+
 	private TabelaGrupoCodigoController tabelaCodigo;
 	private TabelaGrupoSubareaController tabelaSubarea;
-	
+
+	static int integrantes;
 
 	public TrabalhoController(JTextField tfTrabalhoCodigo, JTextField tfTrabalhoTipo, JTextField tfTrabalhoTema,
-			JTextField tfTrabalhoArea, JTextField tfTrabalhoSubarea, JLabel lblBuscaIntegrante, JTextField tfTrabalhoBusca
-			, JTextArea taTrabalhoLista) {
+			JTextField tfTrabalhoArea, JTextField tfTrabalhoSubarea, JLabel lblBuscaIntegrante,
+			JTextField tfTrabalhoBusca, JTextArea taTrabalhoLista) {
 		super();
 		this.tfTrabalhoCodigo = tfTrabalhoCodigo;
 		this.tfTrabalhoTipo = tfTrabalhoTipo;
@@ -48,8 +49,7 @@ public class TrabalhoController implements ActionListener {
 		this.lblBuscaIntegrante = lblBuscaIntegrante;
 		this.tfTrabalhoBusca = tfTrabalhoBusca;
 		this.taTrabalhoLista = taTrabalhoLista;
-	
-		
+
 		tabelaCodigo = new TabelaGrupoCodigoController();
 		tabelaSubarea = new TabelaGrupoSubareaController();
 		try {
@@ -57,7 +57,7 @@ public class TrabalhoController implements ActionListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
@@ -65,48 +65,50 @@ public class TrabalhoController implements ActionListener {
 		String cmd = e.getActionCommand();
 		try {
 			switch (cmd) {
-				case "Gravar":
-					gravar();	
-					break;
-				case "Buscar":
-					buscar();	
-					break;
-				case "Upload por CSV":
-					upload();	
-					break;
-				case "Limpar Busca":
-					gerarListTrabalho(taTrabalhoLista);;	
-					break;
-				default:
-					break;
+			case "Gravar":
+				gravar();
+				break;
+			case "Buscar":
+				buscar();
+				break;
+			case "Upload por CSV":
+				upload();
+				break;
+			case "Limpar Busca":
+				gerarListTrabalho(taTrabalhoLista);
+				;
+				break;
+			default:
+				break;
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		
+
 	}
-	
+
 	private void buscar() throws Exception {
 		Trabalho trabalho = new Trabalho();
 		trabalho.codigo = tfTrabalhoBusca.getText();
-		
+
 		trabalho = buscaTrabalho(trabalho);
 		if (trabalho.tipo != null) {
-			taTrabalhoLista.setText(trabalho.codigo + ";" + trabalho.tipo + ";" + trabalho.tema + ";" + trabalho.area + ";" + trabalho.subarea + ";" + trabalho.integrantes);
+			taTrabalhoLista.setText(trabalho.codigo + ";" + trabalho.tipo + ";" + trabalho.tema + ";" + trabalho.area
+					+ ";" + trabalho.subarea + ";" + trabalho.integrantes);
 		} else {
 			JOptionPane.showMessageDialog(null, "Trabalho não encontrado!", "ERRO!", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
+
 	private Trabalho buscaTrabalho(Trabalho trabalho) throws Exception {
 		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
 		File arq = new File(path, "trabalho.csv");
-		
+
 		if (arq.exists() && arq.isFile()) {
 			FileInputStream fis = new FileInputStream(arq);
 			InputStreamReader isr = new InputStreamReader(fis);
 			BufferedReader buffer = new BufferedReader(isr);
-			
+
 			String linha = buffer.readLine();
 			while (linha != null) {
 				String[] vetLinha = linha.split(";");
@@ -119,7 +121,7 @@ public class TrabalhoController implements ActionListener {
 					trabalho.integrantes = vetLinha[5];
 					break;
 				}
-				
+
 				linha = buffer.readLine();
 			}
 			buffer.close();
@@ -127,30 +129,38 @@ public class TrabalhoController implements ActionListener {
 			fis.close();
 		}
 		return trabalho;
-	}	
+	}
 
 	private void gravar() throws Exception {
-		Trabalho trabalho = new Trabalho();
-		trabalho.codigo = tfTrabalhoCodigo.getText();
-		trabalho.tipo = tfTrabalhoTipo.getText();
-		trabalho.tema = tfTrabalhoTema.getText();
-		trabalho.area = tfTrabalhoArea.getText();
-		trabalho.subarea = tfTrabalhoSubarea.getText();
-		trabalho.integrantes = lblBuscaIntegrante.getText();
-		
-		// Terminar checagem dos campos
-		if (!trabalho.codigo.equals("") && (!trabalho.tipo.equals("") && trabalho.codigo.matches("[0-9]+"))) {
-			gravaTrabalho(trabalho.toString());
-			tfTrabalhoCodigo.setText("");
-			tfTrabalhoTipo.setText("");
-			tfTrabalhoTema.setText("");
-			tfTrabalhoArea.setText("");
-			tfTrabalhoSubarea.setText("");
-			lblBuscaIntegrante.setText("");
+		if (integrantes >= 2) {
+			Trabalho trabalho = new Trabalho();
+			trabalho.codigo = tfTrabalhoCodigo.getText();
+			trabalho.tipo = tfTrabalhoTipo.getText();
+			trabalho.tema = tfTrabalhoTema.getText();
+			trabalho.area = tfTrabalhoArea.getText();
+			trabalho.subarea = tfTrabalhoSubarea.getText();
+			trabalho.integrantes = lblBuscaIntegrante.getText();
+
+			// Terminar checagem dos campos
+			if (!trabalho.codigo.equals("") && (!trabalho.tipo.equals("") && trabalho.codigo.matches("[0-9]+"))) {
+				gravaTrabalho(trabalho.toString());
+				tfTrabalhoCodigo.setText("");
+				tfTrabalhoTipo.setText("");
+				tfTrabalhoTema.setText("");
+				tfTrabalhoArea.setText("");
+				tfTrabalhoSubarea.setText("");
+				lblBuscaIntegrante.setText("");
+				integrantes = 0;
+			} else {
+				JOptionPane.showMessageDialog(null, "Um ou mais campos vazios ou possuem caracteres inválidos", "ERRO!",
+						JOptionPane.ERROR_MESSAGE);
+			}
+			
 		} else {
-			JOptionPane.showMessageDialog(null, "Um ou mais campos vazios ou possuem caracteres inválidos", "ERRO!",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Quantidade de integrantes inválida! Mínimo: 2");
 		}
+
+		
 
 	}
 
@@ -173,7 +183,6 @@ public class TrabalhoController implements ActionListener {
 		fw.close();
 
 	}
-	
 
 	public static void gerarListTrabalho(JTextArea taTrabalhoLista) {
 		taTrabalhoLista.setText("");
@@ -212,25 +221,22 @@ public class TrabalhoController implements ActionListener {
 			}
 		}
 	}
-	
+
 	private void upload() throws Exception {
 		UploadController uploadCrtl = new UploadController();
 		File arquivo = uploadCrtl.uploadArquivo();
 		ListaObject listaTrabalho = new ListaObject();
-		
+
 		if (arquivo != null) {
 			FileInputStream fInStr = new FileInputStream(arquivo);
 			InputStreamReader InStrReader = new InputStreamReader(fInStr);
 			BufferedReader bufferReader = new BufferedReader(InStrReader);
 			String linha = bufferReader.readLine();
-			
+
 			while (linha != null) {
 				String[] vetLinha = linha.split(";");
-				if (vetLinha[0].matches("[0-9]+") &&
-					(!vetLinha[1].equals("")) &&
-					(!vetLinha[2].equals("")) &&
-					(!vetLinha[3].equals("")) &&
-					(!vetLinha[4].equals(""))) {
+				if (vetLinha[0].matches("[0-9]+") && (!vetLinha[1].equals("")) && (!vetLinha[2].equals(""))
+						&& (!vetLinha[3].equals("")) && (!vetLinha[4].equals(""))) {
 					Trabalho trabalho = new Trabalho();
 					trabalho.codigo = vetLinha[0];
 					trabalho.tipo = vetLinha[1];
@@ -241,7 +247,9 @@ public class TrabalhoController implements ActionListener {
 					tabelaCodigo.adiciona(trabalho);
 					tabelaSubarea.adiciona(trabalho);
 				} else {
-					JOptionPane.showMessageDialog(null, "Um ou mais campos inválidos passados por CSV, verifique seu arquivo e tente novamente", "ERRO!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+							"Um ou mais campos inválidos passados por CSV, verifique seu arquivo e tente novamente",
+							"ERRO!", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				linha = bufferReader.readLine();
@@ -249,27 +257,27 @@ public class TrabalhoController implements ActionListener {
 			bufferReader.close();
 			InStrReader.close();
 			fInStr.close();
-			
-			
+
 			while (!listaTrabalho.isEmpty()) {
 				gravaTrabalho(listaTrabalho.get(0).toString());
 				listaTrabalho.removeFirst();
 			}
-			
-			JOptionPane.showMessageDialog(null, "Upload feito com sucesso", "Upload concluído", JOptionPane.PLAIN_MESSAGE);
-			
+
+			JOptionPane.showMessageDialog(null, "Upload feito com sucesso", "Upload concluído",
+					JOptionPane.PLAIN_MESSAGE);
+
 		}
 	}
-	
+
 	private void populaTabelas() throws Exception {
 		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
 		File arq = new File(path, "trabalho.csv");
-		
+
 		if (arq.exists() && arq.isFile()) {
 			FileInputStream fis = new FileInputStream(arq);
 			InputStreamReader isr = new InputStreamReader(fis);
 			BufferedReader buffer = new BufferedReader(isr);
-			
+
 			String linha = buffer.readLine();
 			while (linha != null) {
 				String[] vetLinha = linha.split(";");
@@ -289,61 +297,68 @@ public class TrabalhoController implements ActionListener {
 			fis.close();
 		}
 	}
-	
+
 	public static void buscarAluno(JTextField tfBuscaAluno, JLabel lblBuscaIntegrante) {
-	    String nomeAluno = tfBuscaAluno.getText();
-	    String path = System.getProperty("user.home") + File.separator + "SistemaTCC" + File.separator + "aluno.csv";
-	    StringBuilder listaDeNomes = new StringBuilder(lblBuscaIntegrante.getText());
-	    
-	    try {
-	    	FileReader fileReader = new FileReader(path);
-	    	BufferedReader reader = new BufferedReader(fileReader);
-	        String line;
+		String nomeAluno = tfBuscaAluno.getText();
+		String path = System.getProperty("user.home") + File.separator + "SistemaTCC" + File.separator + "aluno.csv";
+		StringBuilder listaDeNomes = new StringBuilder(lblBuscaIntegrante.getText());
 
-	        while ((line = reader.readLine()) != null) {
-	            if (line.contains(nomeAluno)) {
-	                if (!lblBuscaIntegrante.getText().contains(nomeAluno)) {
-	                    if (listaDeNomes.length() > 0) {
-	                    	listaDeNomes.append(", ");
-	                    }
-	                    listaDeNomes.append(nomeAluno);
-	                    if (listaDeNomes.length() > 0) {
-	                    	lblBuscaIntegrante.setText(listaDeNomes.toString());
-	                    	System.out.println(listaDeNomes);
-	                    	JOptionPane.showMessageDialog(null, "Aluno adicionado com sucesso.");
-	                    } else {
-	                    	JOptionPane.showMessageDialog(null, "Nenhum aluno encontrado com esse nome.");
-	                    }
-	                } else {
-		            	JOptionPane.showMessageDialog(null, "Aluno já está adicionado neste trabalho.");
-		            }
-	            } 
-	        }
-	    } catch (IOException ex) {
-	        ex.printStackTrace();
-	    }
+		try {
+			FileReader fileReader = new FileReader(path);
+			BufferedReader reader = new BufferedReader(fileReader);
+			String line;
+
+			while ((line = reader.readLine()) != null) {
+				if (line.contains(nomeAluno)) {
+					if (!lblBuscaIntegrante.getText().contains(nomeAluno)) {
+						if (integrantes < 4) {
+							if (listaDeNomes.length() > 0) {
+								listaDeNomes.append(", ");
+							}
+							listaDeNomes.append(nomeAluno);
+							if (listaDeNomes.length() > 0) {
+								lblBuscaIntegrante.setText(listaDeNomes.toString());
+								integrantes++;
+								System.out.println(listaDeNomes + "" + integrantes);
+								JOptionPane.showMessageDialog(null, "Aluno adicionado com sucesso.");
+							} else {
+								JOptionPane.showMessageDialog(null, "Nenhum aluno encontrado com esse nome.");
+							}
+						} else {
+							JOptionPane.showMessageDialog(null, "Grupo está com o limite de integrantes!");
+						}
+					} else {
+						JOptionPane.showMessageDialog(null, "Aluno já está adicionado neste trabalho.");
+					}
+				}
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
-	
-	public static void removerAluno(String nomeAluno, JLabel lblBuscaIntegrante) {
-	    String listaDeNomes = lblBuscaIntegrante.getText();
-	    StringBuilder listaDeNomesAtualizada = new StringBuilder();
 
-	    if (listaDeNomes.contains(nomeAluno)) {
-	        String[] nome = listaDeNomes.split(", ");
-	        for (String nomes : nome) {
-	            if (!nomes.equals(nomeAluno)) {
-	                if (listaDeNomesAtualizada.length() > 0) {
-	                	listaDeNomesAtualizada.append(", ");
-	                } else {
-	                	JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
-	                }
-	                listaDeNomesAtualizada.append(nomes);
-	            } else {
-	            	lblBuscaIntegrante.setText(listaDeNomesAtualizada.toString());
-	    	        JOptionPane.showMessageDialog(null, "Aluno removido com sucesso.");
-	            }
-	        }
-	    }
+	public static void removerAluno(String nomeAluno, JLabel lblBuscaIntegrante) {
+		String listaDeNomes = lblBuscaIntegrante.getText();
+		StringBuilder listaDeNomesAtualizada = new StringBuilder();
+
+		if (listaDeNomes.contains(nomeAluno)) {
+			String[] nomes = listaDeNomes.split(", ");
+
+			for (String nome : nomes) {
+				if (nome.equals(nomeAluno)) {
+					JOptionPane.showMessageDialog(null, "Aluno removido com sucesso.");
+					integrantes--;
+				} else {
+					if (listaDeNomesAtualizada.length() > 0) {
+						listaDeNomesAtualizada.append(", ");
+					}
+					listaDeNomesAtualizada.append(nome);
+				}
+			}
+			lblBuscaIntegrante.setText(listaDeNomesAtualizada.toString());
+		} else {
+			JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
+		}
 	}
 
 }
