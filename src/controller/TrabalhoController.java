@@ -124,6 +124,7 @@ public class TrabalhoController implements ActionListener {
 					lblBuscaIntegrante.setText(lblBuscaIntegrante.getText().toString() + ", " + aluno.nome);
 				}
 				JOptionPane.showMessageDialog(null, "Aluno adicionado com sucesso.");
+				tfBuscaIntegrante.setText("");
 			} else {
 				JOptionPane.showMessageDialog(null, "Nenhum aluno encontrado com esse RA.");
 			}
@@ -240,7 +241,7 @@ public class TrabalhoController implements ActionListener {
 			tfTrabalhoSubarea.setText("");
 			lblBuscaIntegrante.setText("");
 			numIntegrantes = 0;
-			
+			JOptionPane.showMessageDialog(null, "Trabalho gravado com sucesso!");
 		} else {
 			JOptionPane.showMessageDialog(null, "Quantidade de integrantes inválida! Mínimo: 2");
 		}

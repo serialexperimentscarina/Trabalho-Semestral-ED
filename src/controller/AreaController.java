@@ -104,6 +104,8 @@ public class AreaController implements ActionListener{
 			taDescArea.setText("");
 			tfSubareas.setText("");
 			taSubareas.setText("");
+			
+			JOptionPane.showMessageDialog(null, "Área gravada com sucesso.");
 		} else {
 			JOptionPane.showMessageDialog(null, "Um ou mais campos vazios ou possuem caracteres inválidos", "ERRO!", JOptionPane.ERROR_MESSAGE);
 		}
@@ -133,6 +135,8 @@ public class AreaController implements ActionListener{
 		if (!subarea.equals("")) {
 			taSubareas.append(subarea + System.getProperty("line.separator"));
 			tfSubareas.setText("");
+			
+			JOptionPane.showMessageDialog(null, "Subárea adicionada com sucesso.");
 		}
 	}
 

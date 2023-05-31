@@ -79,6 +79,7 @@ public class AlunoController implements ActionListener{
 			
 			tfAlunoNome.setText("");
 			tfAlunoRa.setText("");
+			JOptionPane.showMessageDialog(null, "Aluno gravado com sucesso.");
 		} else {
 			JOptionPane.showMessageDialog(null, "Um ou mais campos vazios ou possuem caracteres inválidos", "ERRO!", JOptionPane.ERROR_MESSAGE);
 		}
