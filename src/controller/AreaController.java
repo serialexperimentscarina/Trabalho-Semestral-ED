@@ -25,6 +25,8 @@ public class AreaController implements ActionListener{
 	private JTextArea taAreaLista;
 	private JTextField tfAreaBusca;
 	
+	public static TabelaAreaController tabelaEspalhamentoArea;
+	
 	public AreaController(JTextField tfCodigoArea, JTextField tfNomeArea, JTextArea taDescArea, JTextField tfSubareas,
 			JTextArea taSubareas, JTextArea taAreaLista, JTextField tfAreaBusca) {
 		this.tfCodigoArea = tfCodigoArea;
@@ -35,7 +37,10 @@ public class AreaController implements ActionListener{
 		this.taAreaLista = taAreaLista;
 		this.tfAreaBusca = tfAreaBusca;
 		
+		tabelaEspalhamentoArea = new TabelaAreaController();
+		
 		try {
+			populaTabela();
 			atualizaLista();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -92,6 +97,7 @@ public class AreaController implements ActionListener{
 		
 		if (!area.nome.equals("") && !area.descricao.equals("")) {
 			gravaArea(area.toString());
+			tabelaEspalhamentoArea.adiciona(area);
 			
 			tfCodigoArea.setText("");
 			tfNomeArea.setText("");
@@ -135,8 +141,13 @@ public class AreaController implements ActionListener{
 		Area area = new Area();
 		area.nome =tfAreaBusca.getText();
 		
-		area = buscaArea(area);
-		if (area.descricao != null) {
+		if (area.nome.equals("")) {
+			JOptionPane.showMessageDialog(null, "Nome Inválido!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
+		area = tabelaEspalhamentoArea.busca(area);
+		if (area != null) {
 			String stringSubareas = "; Subáreas: ";
 			int numSubareas = area.subareas.size();
 			for (int i = 0; i < numSubareas; i++) {
@@ -148,38 +159,11 @@ public class AreaController implements ActionListener{
 		}
 	}
 
-	private Area buscaArea(Area area) throws Exception {
-		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
-		File arq = new File(path, "area.csv");
-		
-		if (arq.exists() && arq.isFile()) {
-			FileInputStream fis = new FileInputStream(arq);
-			InputStreamReader isr = new InputStreamReader(fis);
-			BufferedReader buffer = new BufferedReader(isr);
-			
-			String linha = buffer.readLine();
-			while (linha != null) {
-				String[] vetLinha = linha.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-				if (vetLinha[1].equals(area.nome)) {
-					area.codigo = Integer.parseInt(vetLinha[0]);
-					area.descricao = vetLinha[2];
-					String[] listaSubareas = vetLinha[3].substring(1, vetLinha[3].length() - 1).split(";");
-					int numSubareas = listaSubareas.length;
-					for (int i = 0; i < numSubareas; i++) {
-						area.subareas.addFirst(listaSubareas[i]); 
-					}
-				}
-				
-				linha = buffer.readLine();
-			}
-			buffer.close();
-			isr.close();
-			fis.close();
-		}
-		return area;
+	private void atualizaLista() throws Exception {
+			taAreaLista.setText(tabelaEspalhamentoArea.lista());
 	}
 	
-	private void atualizaLista() throws Exception {
+	private void populaTabela() throws Exception {
 		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
 		File arq = new File(path, "area.csv");
 		
@@ -188,19 +172,26 @@ public class AreaController implements ActionListener{
 			InputStreamReader isr = new InputStreamReader(fis);
 			BufferedReader buffer = new BufferedReader(isr);
 			
-			StringBuffer listaDeAreas = new StringBuffer("");
 			String linha = buffer.readLine();
 			while (linha != null) {
 				String[] vetLinha = linha.split(";(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-				String listaSubareas = (", Subáreas: " + String.join(",", vetLinha[3].substring(1, vetLinha[3].length() - 1).split(";")));
-				listaDeAreas.append("Código: " + vetLinha[0] + "; Área: " + vetLinha[1] + "; Descrição: " + vetLinha[2] + listaSubareas + System.getProperty("line.separator"));
+				Area area = new Area();
+				area.codigo = Integer.parseInt(vetLinha[0]);
+				area.nome = vetLinha[1];
+				area.descricao = vetLinha[2];
+				
+				String[] listaDeSubareas = vetLinha[3].substring(1, vetLinha[3].length() - 1).split(";");
+				int numSubareas = listaDeSubareas.length;
+				for (int i = 0; i < numSubareas; i++) {
+					area.subareas.addFirst(listaDeSubareas[i]); 
+				}
+				tabelaEspalhamentoArea.adiciona(area);
 				linha = buffer.readLine();
+				
 			}
 			buffer.close();
 			isr.close();
 			fis.close();
-			
-			taAreaLista.setText(listaDeAreas.toString());
 		}
 	}
 	

@@ -26,4 +26,10 @@ public class Area {
 		return (codigo + ";" + nome + ";" + descricao + ";" + stringSubareas);
 	}
 
+	
+	@Override
+	public int hashCode() {
+		return (nome.toLowerCase().charAt(0)) % 10;
+	}
+	
 }
