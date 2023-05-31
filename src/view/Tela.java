@@ -203,31 +203,29 @@ public class Tela extends JFrame {
 				formTrabalho.setLayout(null);
 				
 				JScrollPane scrollPaneTrabalho = new JScrollPane();
-				scrollPaneTrabalho.setBounds(20, 45, 716, 420);
+				scrollPaneTrabalho.setBounds(20, 68, 716, 397);
 				listTrabalho.add(scrollPaneTrabalho);
 				
 				final JTextArea taTrabalhoLista = new JTextArea();
 				scrollPaneTrabalho.setViewportView(taTrabalhoLista);
-				
-				TrabalhoController.gerarListTrabalho(taTrabalhoLista);
 				
 				
 				
 				JTextField tfTrabalhoBusca = new JTextField();
 				tfTrabalhoBusca.setFont(new Font("Tahoma", Font.PLAIN, 14));
 				tfTrabalhoBusca.setColumns(10);
-				tfTrabalhoBusca.setBounds(292, 9, 294, 30);
+				tfTrabalhoBusca.setBounds(292, 15, 294, 30);
 				listTrabalho.add(tfTrabalhoBusca);
 				
-				JButton btnBuscaTrabalho = new JButton("Buscar");
-				btnBuscaTrabalho.setToolTipText("Pesquisar por código do trabalho");
-				btnBuscaTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
-				btnBuscaTrabalho.setBounds(594, 15, 140, 23);
-				listTrabalho.add(btnBuscaTrabalho);
+				JButton btnBuscaCodigoTrabalho = new JButton("Buscar por código");
+				btnBuscaCodigoTrabalho.setToolTipText("Pesquisar por código do trabalho");
+				btnBuscaCodigoTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
+				btnBuscaCodigoTrabalho.setBounds(596, 0, 153, 23);
+				listTrabalho.add(btnBuscaCodigoTrabalho);
 				
 				JLabel lblTrabalhos = new JLabel("Trabalhos");
 				lblTrabalhos.setFont(new Font("Tahoma", Font.BOLD, 18));
-				lblTrabalhos.setBounds(10, 11, 117, 23);
+				lblTrabalhos.setBounds(10, 17, 117, 23);
 				listTrabalho.add(lblTrabalhos);
 				
 				JButton btnNovoTrabalho = new JButton("Novo Trabalho");
@@ -247,7 +245,6 @@ public class Tela extends JFrame {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						mudarAba(paneTrabalho, listTrabalho);
-						TrabalhoController.atualizarListTrabalho(taTrabalhoLista);
 					}
 				});
 				formTrabalho.add(btnCancelaTrabalho);
@@ -339,28 +336,15 @@ public class Tela extends JFrame {
 		        JButton btnAdicionaIntegrante = new JButton("Adicionar");
 		        btnAdicionaIntegrante.setBounds(420, 360, 100, 25);
 		        formTrabalho.add(btnAdicionaIntegrante);
-		        btnAdicionaIntegrante.addActionListener(new ActionListener() {
-		        	@Override
-		            public void actionPerformed(ActionEvent e) {
-		        		TrabalhoController.buscarAluno(tfBuscaIntegrante, lblNomeIntegrantes);
-		            }
-				});
 		        
 
 		        JButton btnRemoveIntegrante = new JButton("Remover");
 		        btnRemoveIntegrante.setBounds(545, 360, 100, 25);
 		        formTrabalho.add(btnRemoveIntegrante);
-		        btnRemoveIntegrante.addActionListener(new ActionListener() {
-		        	@Override
-		            public void actionPerformed(ActionEvent e) {
-		                TrabalhoController.removerAluno(tfBuscaIntegrante.getText(), lblNomeIntegrantes);
-		            }
-		        
-		        });
 		        
 				JButton btnLimpaBuscaTrabalho = new JButton("Limpar Busca");
 				btnLimpaBuscaTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
-				btnLimpaBuscaTrabalho.setBounds(140, 15, 140, 23);
+				btnLimpaBuscaTrabalho.setBounds(142, 19, 140, 23);
 				listTrabalho.add(btnLimpaBuscaTrabalho);
 		
 		JPanel tabArea = new JPanel();
@@ -647,12 +631,21 @@ public class Tela extends JFrame {
 		btnLimpaBuscaAluno.addActionListener(ctrlAluno);
 		
 		TrabalhoController ctrlTrabalho = new TrabalhoController(tfTrabalhoCodigo, tfTrabalhoTipo, 
-		tfTrabalhoTema, tfTrabalhoArea,  tfTrabalhoSubarea, lblNomeIntegrantes, tfTrabalhoBusca, taTrabalhoLista);
+		tfTrabalhoTema, tfTrabalhoArea,  tfTrabalhoSubarea, lblNomeIntegrantes, tfTrabalhoBusca, taTrabalhoLista, tfBuscaIntegrante);
+		
+		JButton btnBuscaSubareaTrabalho = new JButton("Buscar por subárea");
+		btnBuscaSubareaTrabalho.setToolTipText("Pesquisar por código do área");
+		btnBuscaSubareaTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnBuscaSubareaTrabalho.setBounds(596, 34, 153, 23);
+		listTrabalho.add(btnBuscaSubareaTrabalho);
 		
 		btnGravarTrabalho.addActionListener(ctrlTrabalho);
 		btnUploadTrabalho.addActionListener(ctrlTrabalho);
-		btnBuscaTrabalho.addActionListener(ctrlTrabalho);
+		btnBuscaCodigoTrabalho.addActionListener(ctrlTrabalho);
+		btnBuscaSubareaTrabalho.addActionListener(ctrlTrabalho);
 		btnLimpaBuscaTrabalho.addActionListener(ctrlTrabalho);
+		btnAdicionaIntegrante.addActionListener(ctrlTrabalho);
+		btnRemoveIntegrante.addActionListener(ctrlTrabalho);
 		
 		AreaController ctrlArea = new AreaController(tfCodigoArea, tfNomeArea, taDescArea, tfSubareas, taSubareas, taAreaLista, tfAreaBusca);
 		

@@ -9,6 +9,7 @@ public class Trabalho {
 	public String subarea;
 	public String integrantes;
 	
+	
 	@Override
 	public String toString() {
 		return (codigo + ";" + tipo + ";" + tema + ";" + area + ";" + subarea + ";" + integrantes);

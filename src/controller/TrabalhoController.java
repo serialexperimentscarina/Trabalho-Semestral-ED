@@ -5,10 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
@@ -19,6 +16,7 @@ import javax.swing.JTextField;
 
 import br.com.serialexperimentscarina.listaobject.ListaObject;
 import model.Aluno;
+import model.Area;
 import model.Trabalho;
 
 public class TrabalhoController implements ActionListener {
@@ -31,16 +29,16 @@ public class TrabalhoController implements ActionListener {
 	private JLabel lblBuscaIntegrante;
 	private JTextField tfTrabalhoBusca;
 	private JTextArea taTrabalhoLista;
+	private JTextField tfBuscaIntegrante;
+	
+	public static TabelaGrupoCodigoController tabelaEspalhamentoGrupoCodigo;
+	public static TabelaGrupoSubareaController tabelaEspalhamentoGrupoSubarea;
 
-	private TabelaGrupoCodigoController tabelaCodigo;
-	private TabelaGrupoSubareaController tabelaSubarea;
-
-	static int integrantes;
+	private static int numIntegrantes;
 
 	public TrabalhoController(JTextField tfTrabalhoCodigo, JTextField tfTrabalhoTipo, JTextField tfTrabalhoTema,
 			JTextField tfTrabalhoArea, JTextField tfTrabalhoSubarea, JLabel lblBuscaIntegrante,
-			JTextField tfTrabalhoBusca, JTextArea taTrabalhoLista) {
-		super();
+			JTextField tfTrabalhoBusca, JTextArea taTrabalhoLista, JTextField tfBuscaIntegrante) {
 		this.tfTrabalhoCodigo = tfTrabalhoCodigo;
 		this.tfTrabalhoTipo = tfTrabalhoTipo;
 		this.tfTrabalhoTema = tfTrabalhoTema;
@@ -49,11 +47,15 @@ public class TrabalhoController implements ActionListener {
 		this.lblBuscaIntegrante = lblBuscaIntegrante;
 		this.tfTrabalhoBusca = tfTrabalhoBusca;
 		this.taTrabalhoLista = taTrabalhoLista;
-
-		tabelaCodigo = new TabelaGrupoCodigoController();
-		tabelaSubarea = new TabelaGrupoSubareaController();
+		this.tfBuscaIntegrante = tfBuscaIntegrante;
+	
+		numIntegrantes = 0;
+		
+		tabelaEspalhamentoGrupoCodigo = new TabelaGrupoCodigoController();
+		tabelaEspalhamentoGrupoSubarea = new TabelaGrupoSubareaController();
 		try {
 			populaTabelas();
+			gerarListTrabalho();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -65,104 +67,183 @@ public class TrabalhoController implements ActionListener {
 		String cmd = e.getActionCommand();
 		try {
 			switch (cmd) {
-			case "Gravar":
-				gravar();
-				break;
-			case "Buscar":
-				buscar();
-				break;
-			case "Upload por CSV":
-				upload();
-				break;
-			case "Limpar Busca":
-				gerarListTrabalho(taTrabalhoLista);
-				;
-				break;
-			default:
-				break;
+				case "Gravar":
+					gravar();	
+					break;
+				case "Buscar por código":
+					buscarCodigo();	
+					break;
+				case "Buscar por subárea":
+					buscarArea();	
+					break;
+				case "Upload por CSV":
+					upload();	
+					break;
+				case "Limpar Busca":
+					gerarListTrabalho();
+					break;
+				case "Adicionar":
+					adicionar();	
+					break;
+				case "Remover":
+					remover();	
+					break;
+				default:
+					break;
 			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 
 	}
+	
+	private void adicionar() throws Exception {
+		Aluno aluno = new Aluno();
+		if (tfBuscaIntegrante.getText().toString().equals("") || !tfBuscaIntegrante.getText().toString().matches("[0-9]+")) {
+			JOptionPane.showMessageDialog(null, "Número de RA do aluno inválido");
+			return;
+		}
+		
+		aluno.ra = tfBuscaIntegrante.getText();
+		aluno = AlunoController.tabelaEspalhamentoAluno.busca(aluno);
+		
+		
+		if (numIntegrantes < 4) {
+			if (aluno != null) {
+				String integrantes = lblBuscaIntegrante.getText().toString();
+				
+				if(integrantes.contains(aluno.nome)) {
+					JOptionPane.showMessageDialog(null, "Aluno já está adicionado neste trabalho.");
+					return;
+				}
+				
+				numIntegrantes++;
+				if (integrantes.equals("")) {
+					lblBuscaIntegrante.setText(aluno.nome);
+				} else {
+					lblBuscaIntegrante.setText(lblBuscaIntegrante.getText().toString() + ", " + aluno.nome);
+				}
+				JOptionPane.showMessageDialog(null, "Aluno adicionado com sucesso.");
+			} else {
+				JOptionPane.showMessageDialog(null, "Nenhum aluno encontrado com esse RA.");
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Grupo está com o limite de integrantes!");
+		}
+	}
+	
+	private void remover() throws Exception {
+		if (tfBuscaIntegrante.getText().toString().equals("") || !tfBuscaIntegrante.getText().toString().matches("[0-9]+")) {
+			JOptionPane.showMessageDialog(null, "Número de RA do aluno inválido");
+			return;
+		}
+		
+		Aluno aluno = new Aluno();
+		aluno.ra = tfBuscaIntegrante.getText();
+		aluno = AlunoController.tabelaEspalhamentoAluno.busca(aluno);
+		String listaDeNomes = lblBuscaIntegrante.getText();
+		StringBuilder listaDeNomesAtualizada = new StringBuilder();
 
-	private void buscar() throws Exception {
+		if (listaDeNomes.contains(aluno.nome)) {
+			String[] nomes = listaDeNomes.split(", ");
+
+			for (String nome : nomes) {
+				if (nome.equals(aluno.nome)) {
+					JOptionPane.showMessageDialog(null, "Aluno removido com sucesso.");
+					numIntegrantes--;
+				} else {
+					if (listaDeNomesAtualizada.length() > 0) {
+						listaDeNomesAtualizada.append(", ");
+					}
+					listaDeNomesAtualizada.append(nome);
+				}
+			}
+			lblBuscaIntegrante.setText(listaDeNomesAtualizada.toString());
+		} else {
+			JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
+		}
+	}
+
+	private void buscarCodigo() throws Exception {
 		Trabalho trabalho = new Trabalho();
 		trabalho.codigo = tfTrabalhoBusca.getText();
-
-		trabalho = buscaTrabalho(trabalho);
-		if (trabalho.tipo != null) {
-			taTrabalhoLista.setText(trabalho.codigo + ";" + trabalho.tipo + ";" + trabalho.tema + ";" + trabalho.area
-					+ ";" + trabalho.subarea + ";" + trabalho.integrantes);
+		
+		trabalho = tabelaEspalhamentoGrupoCodigo.busca(trabalho);
+		if (trabalho != null) {
+			taTrabalhoLista.setText("Código: " + trabalho.codigo + ", Tipo: " + trabalho.tipo + ", Tema: " + trabalho.tema + ", Área:" + trabalho.area + ", Subárea: " + trabalho.subarea + ", Integrantes: " + trabalho.integrantes);
 		} else {
 			JOptionPane.showMessageDialog(null, "Trabalho não encontrado!", "ERRO!", JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}
-
-	private Trabalho buscaTrabalho(Trabalho trabalho) throws Exception {
-		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
-		File arq = new File(path, "trabalho.csv");
-
-		if (arq.exists() && arq.isFile()) {
-			FileInputStream fis = new FileInputStream(arq);
-			InputStreamReader isr = new InputStreamReader(fis);
-			BufferedReader buffer = new BufferedReader(isr);
-
-			String linha = buffer.readLine();
-			while (linha != null) {
-				String[] vetLinha = linha.split(";");
-				if (vetLinha[0].equals(trabalho.codigo)) {
-					trabalho.codigo = vetLinha[0];
-					trabalho.tipo = vetLinha[1];
-					trabalho.tema = vetLinha[2];
-					trabalho.area = vetLinha[3];
-					trabalho.subarea = vetLinha[4];
-					trabalho.integrantes = vetLinha[5];
-					break;
-				}
-
-				linha = buffer.readLine();
-			}
-			buffer.close();
-			isr.close();
-			fis.close();
+	
+	private void buscarArea() throws Exception {
+		Trabalho trabalho = new Trabalho();
+		trabalho.subarea = tfTrabalhoBusca.getText();
+		
+		String trabalhos = tabelaEspalhamentoGrupoSubarea.busca(trabalho);
+		if (!trabalhos.equals("")) {
+			taTrabalhoLista.setText(trabalhos);
+		} else {
+			JOptionPane.showMessageDialog(null, "Trabalho não encontrado!", "ERRO!", JOptionPane.ERROR_MESSAGE);
 		}
-		return trabalho;
+		
 	}
-
+	
 	private void gravar() throws Exception {
-		if (integrantes >= 2) {
+		if (numIntegrantes >= 2) {
 			Trabalho trabalho = new Trabalho();
 			trabalho.codigo = tfTrabalhoCodigo.getText();
 			trabalho.tipo = tfTrabalhoTipo.getText();
 			trabalho.tema = tfTrabalhoTema.getText();
-			trabalho.area = tfTrabalhoArea.getText();
 			trabalho.subarea = tfTrabalhoSubarea.getText();
 			trabalho.integrantes = lblBuscaIntegrante.getText();
-
-			// Terminar checagem dos campos
-			if (!trabalho.codigo.equals("") && (!trabalho.tipo.equals("") && trabalho.codigo.matches("[0-9]+"))) {
-				gravaTrabalho(trabalho.toString());
-				tfTrabalhoCodigo.setText("");
-				tfTrabalhoTipo.setText("");
-				tfTrabalhoTema.setText("");
-				tfTrabalhoArea.setText("");
-				tfTrabalhoSubarea.setText("");
-				lblBuscaIntegrante.setText("");
-				integrantes = 0;
-			} else {
+			
+			if (trabalho.codigo.equals("") || trabalho.tipo.equals("") || trabalho.codigo.equals("") || !trabalho.codigo.matches("[0-9]+")) {
 				JOptionPane.showMessageDialog(null, "Um ou mais campos vazios ou possuem caracteres inválidos", "ERRO!",
 						JOptionPane.ERROR_MESSAGE);
+				return;
 			}
+			Area area = new Area();
+			area.nome = tfTrabalhoArea.getText();
+			area = AreaController.tabelaEspalhamentoArea.busca(area);
+			
+			if (area == null) {
+				JOptionPane.showMessageDialog(null, "Área não cadastrada no sistema", "ERRO!",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			trabalho.area = area.nome;
+			
+			boolean subareaExiste = false;
+			int totalSubareas = area.subareas.size();
+			
+			for (int i = 0; i < totalSubareas; i++) {
+				if (area.subareas.get(i).equals(trabalho.subarea)) {
+					subareaExiste = true;
+					break;
+				}
+			}
+			if(!subareaExiste) {
+				JOptionPane.showMessageDialog(null, "Subárea não cadastrada no sistema", "ERRO!",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			gravaTrabalho(trabalho.toString());
+			tabelaEspalhamentoGrupoCodigo.adiciona(trabalho);
+			tabelaEspalhamentoGrupoSubarea.adiciona(trabalho);
+			tfTrabalhoCodigo.setText("");
+			tfTrabalhoTipo.setText("");
+			tfTrabalhoTema.setText("");
+			tfTrabalhoArea.setText("");
+			tfTrabalhoSubarea.setText("");
+			lblBuscaIntegrante.setText("");
+			numIntegrantes = 0;
 			
 		} else {
 			JOptionPane.showMessageDialog(null, "Quantidade de integrantes inválida! Mínimo: 2");
 		}
-
-		
-
 	}
 
 	private void gravaTrabalho(String csvTrabalho) throws Exception {
@@ -185,42 +266,8 @@ public class TrabalhoController implements ActionListener {
 
 	}
 
-	public static void gerarListTrabalho(JTextArea taTrabalhoLista) {
-		taTrabalhoLista.setText("");
-		try {
-			String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
-			File arq = new File(path, "trabalho.csv");
-			if (arq.exists()) {
-				BufferedReader reader = new BufferedReader(new FileReader(arq));
-				String line;
-				while ((line = reader.readLine()) != null) {
-					line = line.replace(";", " - ");
-					taTrabalhoLista.append(line + "\n");
-				}
-				reader.close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public static void atualizarListTrabalho(JTextArea taTrabalhoLista) {
-		taTrabalhoLista.setText("");
-		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
-		File arq = new File(path, "trabalho.csv");
-		if (arq.exists()) {
-			try {
-				BufferedReader reader = new BufferedReader(new FileReader(arq));
-				String line;
-				while ((line = reader.readLine()) != null) {
-					line = line.replace(";", " - ");
-					taTrabalhoLista.append(line + "\n");
-				}
-				reader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	public void gerarListTrabalho() throws Exception {
+		taTrabalhoLista.setText(tabelaEspalhamentoGrupoCodigo.lista());
 	}
 
 	private void upload() throws Exception {
@@ -245,8 +292,6 @@ public class TrabalhoController implements ActionListener {
 					trabalho.area = vetLinha[3];
 					trabalho.subarea = vetLinha[4];
 					listaTrabalho.addFirst(trabalho);
-					tabelaCodigo.adiciona(trabalho);
-					tabelaSubarea.adiciona(trabalho);
 				} else {
 					JOptionPane.showMessageDialog(null,
 							"Um ou mais campos inválidos passados por CSV, verifique seu arquivo e tente novamente",
@@ -260,7 +305,10 @@ public class TrabalhoController implements ActionListener {
 			fInStr.close();
 
 			while (!listaTrabalho.isEmpty()) {
-				gravaTrabalho(listaTrabalho.get(0).toString());
+				Trabalho trabalho = (Trabalho) listaTrabalho.get(0);
+				gravaTrabalho(trabalho.toString());
+				tabelaEspalhamentoGrupoCodigo.adiciona(trabalho);
+				tabelaEspalhamentoGrupoSubarea.adiciona(trabalho);
 				listaTrabalho.removeFirst();
 			}
 
@@ -289,8 +337,8 @@ public class TrabalhoController implements ActionListener {
 				trabalho.area = vetLinha[3];
 				trabalho.subarea = vetLinha[4];
 				trabalho.integrantes = vetLinha[5];
-				tabelaCodigo.adiciona(trabalho);
-				tabelaSubarea.adiciona(trabalho);
+				tabelaEspalhamentoGrupoCodigo.adiciona(trabalho);
+				tabelaEspalhamentoGrupoSubarea.adiciona(trabalho);
 				linha = buffer.readLine();
 			}
 			buffer.close();
@@ -298,68 +346,4 @@ public class TrabalhoController implements ActionListener {
 			fis.close();
 		}
 	}
-
-	public static void buscarAluno(JTextField tfBuscaAluno, JLabel lblBuscaIntegrante) {
-		String nomeAluno = tfBuscaAluno.getText();
-		String path = System.getProperty("user.home") + File.separator + "SistemaTCC" + File.separator + "aluno.csv";
-		StringBuilder listaDeNomes = new StringBuilder(lblBuscaIntegrante.getText());
-
-		try {
-			FileReader fileReader = new FileReader(path);
-			BufferedReader reader = new BufferedReader(fileReader);
-			String line;
-
-			while ((line = reader.readLine()) != null) {
-				if (line.contains(nomeAluno)) {
-					if (!lblBuscaIntegrante.getText().contains(nomeAluno)) {
-						if (integrantes < 4) {
-							if (listaDeNomes.length() > 0) {
-								listaDeNomes.append(", ");
-							}
-							listaDeNomes.append(nomeAluno);
-							if (listaDeNomes.length() > 0) {
-								lblBuscaIntegrante.setText(listaDeNomes.toString());
-								integrantes++;
-								System.out.println(listaDeNomes + "" + integrantes);
-								JOptionPane.showMessageDialog(null, "Aluno adicionado com sucesso.");
-							} else {
-								JOptionPane.showMessageDialog(null, "Nenhum aluno encontrado com esse nome.");
-							}
-						} else {
-							JOptionPane.showMessageDialog(null, "Grupo está com o limite de integrantes!");
-						}
-					} else {
-						JOptionPane.showMessageDialog(null, "Aluno já está adicionado neste trabalho.");
-					}
-				}
-			}
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	public static void removerAluno(String nomeAluno, JLabel lblBuscaIntegrante) {
-		String listaDeNomes = lblBuscaIntegrante.getText();
-		StringBuilder listaDeNomesAtualizada = new StringBuilder();
-
-		if (listaDeNomes.contains(nomeAluno)) {
-			String[] nomes = listaDeNomes.split(", ");
-
-			for (String nome : nomes) {
-				if (nome.equals(nomeAluno)) {
-					JOptionPane.showMessageDialog(null, "Aluno removido com sucesso.");
-					integrantes--;
-				} else {
-					if (listaDeNomesAtualizada.length() > 0) {
-						listaDeNomesAtualizada.append(", ");
-					}
-					listaDeNomesAtualizada.append(nome);
-				}
-			}
-			lblBuscaIntegrante.setText(listaDeNomesAtualizada.toString());
-		} else {
-			JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
-		}
-	}
-
 }

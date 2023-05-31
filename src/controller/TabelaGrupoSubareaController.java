@@ -23,7 +23,6 @@ public class TabelaGrupoSubareaController implements ITabelaGrupoController{
 		l.addFirst(trabalho);
 	}
 
-	@Override
 	public String busca(Trabalho trabalho) throws Exception {
 		int hash = trabalho.hashSubarea();
 		ListaObject l = tabelaDeEspalhamento[hash];
@@ -33,7 +32,7 @@ public class TabelaGrupoSubareaController implements ITabelaGrupoController{
 		for (int i = 0; i < tamanho; i++) {
 			Trabalho trbl = (Trabalho) l.get(i);
 			if(trabalho.subarea.equals(trbl.subarea)) {
-				trabalhos += ("Código: " + trbl.codigo + ", Tipo: " + trbl.tipo + ", Tema: " + trbl.tema + ", Área:" + trbl.area + ", Subárea: " + trbl.subarea + System.getProperty("line.separator"));
+				trabalhos += ("Código: " + trbl.codigo + ", Tipo: " + trbl.tipo + ", Tema: " + trbl.tema + ", Área:" + trbl.area + ", Subárea: " + trbl.subarea + ", Integrantes: " + trbl.integrantes + System.getProperty("line.separator"));
 			}
 		}
 		

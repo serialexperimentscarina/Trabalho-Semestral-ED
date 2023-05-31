@@ -23,8 +23,7 @@ public class TabelaGrupoCodigoController implements ITabelaGrupoController{
 		l.addFirst(trabalho);
 	}
 
-	@Override
-	public String busca(Trabalho trabalho) throws Exception {
+	public Trabalho busca(Trabalho trabalho) throws Exception {
 		int hash = trabalho.hashCodigo();
 		ListaObject l = tabelaDeEspalhamento[hash];
 		int tamanho = l.size();
@@ -32,10 +31,25 @@ public class TabelaGrupoCodigoController implements ITabelaGrupoController{
 		for (int i = 0; i < tamanho; i++) {
 			Trabalho trbl = (Trabalho) l.get(i);
 			if(trabalho.codigo.equals(trbl.codigo)) {
-				return ("Código: " + trbl.codigo + ", Tipo: " + trbl.tipo + ", Tema: " + trbl.tema + ", Área:" + trbl.area + ", Subárea: " + trbl.subarea);
+				return trbl;
 			}
 		}
 		return null;
+	}
+	
+	public String lista() throws Exception {
+		StringBuffer trabalhos = new StringBuffer("");
+		for (int i = 0; i < 10; i++) {
+			ListaObject l = tabelaDeEspalhamento[i];
+			int tamanho = l.size();
+			
+			for (int j = 0; j < tamanho; j++) {
+				Trabalho trabalho = (Trabalho) l.get(j);
+				trabalhos.append("Código: " + trabalho.codigo + ", Tipo: " + trabalho.tipo + ", Tema: " + trabalho.tema + ", Área:" + trabalho.area + ", Subárea: " + trabalho.subarea + ", Integrantes: " + trabalho.integrantes + System.getProperty("line.separator"));
+			}
+		}
+		return trabalhos.toString();
+		
 	}
 	
 
