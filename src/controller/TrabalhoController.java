@@ -289,8 +289,43 @@ public class TrabalhoController implements ActionListener {
 					trabalho.codigo = vetLinha[0];
 					trabalho.tipo = vetLinha[1];
 					trabalho.tema = vetLinha[2];
+					
+					Area area = new Area();
+					area.nome = vetLinha[3];
+					area = AreaController.tabelaEspalhamentoArea.busca(area);
+					
+					if (area == null) {
+						JOptionPane.showMessageDialog(null, "Um dos campos de área possui uma área não cadastrada no sistema", "ERRO!",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					
 					trabalho.area = vetLinha[3];
 					trabalho.subarea = vetLinha[4];
+					
+					boolean subareaExiste = false;
+					int totalSubareas = area.subareas.size();
+					
+					for (int i = 0; i < totalSubareas; i++) {
+						if (area.subareas.get(i).equals(trabalho.subarea)) {
+							subareaExiste = true;
+							break;
+						}
+					}
+					if(!subareaExiste) {
+						JOptionPane.showMessageDialog(null, "Um dos campos de subárea possui uma subárea não cadastrada no sistema", "ERRO!",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					
+					String[] integrantes = vetLinha[5].split(",");
+					if(integrantes.length < 2 || integrantes.length > 4) {
+						JOptionPane.showMessageDialog(null, "Um dos campos de integrante possui um número inválido de integrantes", "ERRO!",
+								JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+					trabalho.integrantes = vetLinha[5];
+					
 					listaTrabalho.addFirst(trabalho);
 				} else {
 					JOptionPane.showMessageDialog(null,
@@ -312,6 +347,7 @@ public class TrabalhoController implements ActionListener {
 				listaTrabalho.removeFirst();
 			}
 
+			gerarListTrabalho();
 			JOptionPane.showMessageDialog(null, "Upload feito com sucesso", "Upload concluído",
 					JOptionPane.PLAIN_MESSAGE);
 
