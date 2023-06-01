@@ -115,7 +115,7 @@ public class Tela extends JFrame {
 		listAluno.add(btnNovoAluno);
 		
 		JScrollPane scrollPaneAluno = new JScrollPane();
-		scrollPaneAluno.setBounds(20, 45, 716, 420);
+		scrollPaneAluno.setBounds(20, 65, 716, 400);
 		listAluno.add(scrollPaneAluno);
 		
 		JTextArea taAlunoLista = new JTextArea();
@@ -132,7 +132,7 @@ public class Tela extends JFrame {
 		JButton btnBuscaAluno = new JButton("Buscar");
 		btnBuscaAluno.setToolTipText("Pesquisar por RA");
 		btnBuscaAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnBuscaAluno.setBounds(596, 13, 140, 23);
+		btnBuscaAluno.setBounds(596, 0, 140, 23);
 		listAluno.add(btnBuscaAluno);
 		
 		JLabel lblNovoAluno = new JLabel("Novo Aluno");
@@ -631,10 +631,17 @@ public class Tela extends JFrame {
 		btnLimpaBuscaAluno.setBounds(142, 13, 140, 23);
 		listAluno.add(btnLimpaBuscaAluno);
 		
+		JButton btnExcluirAluno = new JButton("Excluir");
+		btnExcluirAluno.setToolTipText("Pesquisar por RA");
+		btnExcluirAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnExcluirAluno.setBounds(596, 31, 140, 23);
+		listAluno.add(btnExcluirAluno);
+		
 		btnGravarAluno.addActionListener(ctrlAluno);
 		btnBuscaAluno.addActionListener(ctrlAluno);
 		btnUploadAluno.addActionListener(ctrlAluno);
 		btnLimpaBuscaAluno.addActionListener(ctrlAluno);
+		btnExcluirAluno.addActionListener(ctrlAluno);
 		
 		TrabalhoController ctrlTrabalho = new TrabalhoController(tfTrabalhoCodigo, tfTrabalhoTipo, 
 				tfTrabalhoTema, tfTrabalhoArea,  tfTrabalhoSubarea, lblNomeIntegrantes, tfTrabalhoBusca, taTrabalhoLista, tfBuscaIntegrante);

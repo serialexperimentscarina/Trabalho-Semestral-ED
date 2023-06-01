@@ -1,5 +1,7 @@
 package controller;
 
+import javax.swing.JOptionPane;
+
 import br.com.serialexperimentscarina.listaobject.ListaObject;
 import model.Aluno;
 
@@ -34,6 +36,21 @@ ListaObject[] tabelaDeEspalhamento;
 			}
 		}
 		return null;
+	}
+	
+	public boolean remove(Aluno aluno) throws Exception {
+		int hash = aluno.hashCode();
+		ListaObject l = tabelaDeEspalhamento[hash];
+		int tamanho = l.size();
+		
+		for (int i = 0; i < tamanho; i++) {
+			Aluno al = (Aluno) l.get(i);
+			if(al.ra.equals(aluno.ra)) {
+				l.remove(i);
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public String lista() throws Exception {

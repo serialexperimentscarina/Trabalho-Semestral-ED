@@ -3,7 +3,7 @@ package controller;
 import br.com.serialexperimentscarina.listaobject.ListaObject;
 import model.Trabalho;
 
-public class TabelaGrupoSubareaController implements ITabelaGrupoController{
+public class TabelaGrupoSubareaController {
 
 	ListaObject[] tabelaDeEspalhamento;
 	
@@ -15,7 +15,6 @@ public class TabelaGrupoSubareaController implements ITabelaGrupoController{
 		}
 	}
 	
-	@Override
 	public void adiciona(Trabalho trabalho) throws Exception {
 		int hash = trabalho.hashSubarea();
 		ListaObject l = tabelaDeEspalhamento[hash];

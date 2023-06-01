@@ -3,7 +3,7 @@ package controller;
 import br.com.serialexperimentscarina.listaobject.ListaObject;
 import model.Trabalho;
 
-public class TabelaGrupoCodigoController implements ITabelaGrupoController{
+public class TabelaGrupoCodigoController {
 
 	ListaObject[] tabelaDeEspalhamento;
 	
@@ -15,7 +15,6 @@ public class TabelaGrupoCodigoController implements ITabelaGrupoController{
 		}
 	}
 	
-	@Override
 	public void adiciona(Trabalho trabalho) throws Exception {
 		int hash = trabalho.hashCodigo();
 		ListaObject l = tabelaDeEspalhamento[hash];
