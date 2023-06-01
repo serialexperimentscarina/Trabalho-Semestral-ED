@@ -180,7 +180,6 @@ public class AlunoController implements ActionListener{
 			InputStreamReader isr = new InputStreamReader(fis);
 			BufferedReader buffer = new BufferedReader(isr);
 			
-			StringBuffer listaDeAlunos = new StringBuffer("");
 			String linha = buffer.readLine();
 			while (linha != null) {
 				String[] vetLinha = linha.split(";");

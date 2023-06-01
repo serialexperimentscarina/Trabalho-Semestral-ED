@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import controller.AlunoController;
 import controller.AreaController;
+import controller.OrientacaoController;
 import controller.TrabalhoController;
 
 import javax.swing.JTabbedPane;
@@ -207,9 +208,8 @@ public class Tela extends JFrame {
 				listTrabalho.add(scrollPaneTrabalho);
 				
 				final JTextArea taTrabalhoLista = new JTextArea();
+				taTrabalhoLista.setEditable(false);
 				scrollPaneTrabalho.setViewportView(taTrabalhoLista);
-				
-				
 				
 				JTextField tfTrabalhoBusca = new JTextField();
 				tfTrabalhoBusca.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -519,6 +519,7 @@ public class Tela extends JFrame {
 		listOrientacao.add(scrollPaneOrientacao);
 		
 		JTextArea taOrientacaoLista = new JTextArea();
+		taOrientacaoLista.setEditable(false);
 		scrollPaneOrientacao.setViewportView(taOrientacaoLista);
 		
 		tfOrientacaoBusca = new JTextField();
@@ -528,7 +529,7 @@ public class Tela extends JFrame {
 		tfOrientacaoBusca.setBounds(290, 11, 294, 30);
 		listOrientacao.add(tfOrientacaoBusca);
 		
-		JButton btnBuscaOrientacao = new JButton("Buscar");
+		JButton btnBuscaOrientacao = new JButton("Buscar última");
 		btnBuscaOrientacao.setToolTipText("Pesquisar por nome de área");
 		btnBuscaOrientacao.setFont(new Font("Tahoma", Font.BOLD, 12));
 		btnBuscaOrientacao.setBounds(594, 15, 140, 23);
@@ -566,14 +567,14 @@ public class Tela extends JFrame {
 		tfTrabalhoOrientacao.setBounds(160, 70, 248, 30);
 		formOrientacao.add(tfTrabalhoOrientacao);
 		
-		JButton btnBuscarTrabalho = new JButton("Buscar");
-		btnBuscarTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnBuscarTrabalho.setBounds(418, 75, 140, 23);
-		formOrientacao.add(btnBuscarTrabalho);
+		JButton btnAdicionarTrabalho = new JButton("Adicionar");
+		btnAdicionarTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnAdicionarTrabalho.setBounds(418, 75, 140, 23);
+		formOrientacao.add(btnAdicionarTrabalho);
 		
 		JLabel lblOrientaoAssociada = new JLabel("Orientação associada à:");
 		lblOrientaoAssociada.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblOrientaoAssociada.setBounds(60, 111, 292, 30);
+		lblOrientaoAssociada.setBounds(60, 111, 155, 30);
 		formOrientacao.add(lblOrientaoAssociada);
 		
 		JLabel lblDataOrientacao = new JLabel("Data:");
@@ -618,6 +619,11 @@ public class Tela extends JFrame {
 		taPontosOrientacao.setBounds(160, 210, 398, 194);
 		formOrientacao.add(taPontosOrientacao);
 		
+		JLabel lblOrientacaoTrabalho = new JLabel("");
+		lblOrientacaoTrabalho.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblOrientacaoTrabalho.setBounds(225, 111, 155, 30);
+		formOrientacao.add(lblOrientacaoTrabalho);
+		
 		AlunoController ctrlAluno = new AlunoController(tfAlunoNome, tfAlunoRa, taAlunoLista, tfAlunoBusca);
 		
 		JButton btnLimpaBuscaAluno = new JButton("Limpar Busca");
@@ -631,7 +637,7 @@ public class Tela extends JFrame {
 		btnLimpaBuscaAluno.addActionListener(ctrlAluno);
 		
 		TrabalhoController ctrlTrabalho = new TrabalhoController(tfTrabalhoCodigo, tfTrabalhoTipo, 
-		tfTrabalhoTema, tfTrabalhoArea,  tfTrabalhoSubarea, lblNomeIntegrantes, tfTrabalhoBusca, taTrabalhoLista, tfBuscaIntegrante);
+				tfTrabalhoTema, tfTrabalhoArea,  tfTrabalhoSubarea, lblNomeIntegrantes, tfTrabalhoBusca, taTrabalhoLista, tfBuscaIntegrante);
 		
 		JButton btnBuscaSubareaTrabalho = new JButton("Buscar por subárea");
 		btnBuscaSubareaTrabalho.setToolTipText("Pesquisar por código do área");
@@ -658,5 +664,13 @@ public class Tela extends JFrame {
 		btnAdicionaSubarea.addActionListener(ctrlArea);
 		btnBuscaArea.addActionListener(ctrlArea);
 		btnLimpaBuscaArea.addActionListener(ctrlArea);
+		
+		OrientacaoController ctrlOrientacao = new OrientacaoController(tfOrientacaoBusca, taOrientacaoLista, 
+				tfTrabalhoOrientacao, lblOrientacaoTrabalho, tfDiaOrientacao, tfMesOrientacao, tfAnoOrientacao, taPontosOrientacao);
+		btnGravaOrientacao.addActionListener(ctrlOrientacao);
+		btnAdicionarTrabalho.addActionListener(ctrlOrientacao);
+		btnBuscaOrientacao.addActionListener(ctrlOrientacao);
+		btnLimpaBuscaOrientacao.addActionListener(ctrlOrientacao);
+		
 	}
 }

@@ -1,5 +1,7 @@
 package model;
 
+import br.com.serialexperimentscarina.pilhaobject.PilhaObject;
+
 public class Trabalho {
 	
 	public String codigo;
@@ -9,6 +11,7 @@ public class Trabalho {
 	public String subarea;
 	public String integrantes;
 	
+	public PilhaObject orientacoes = new PilhaObject();
 	
 	@Override
 	public String toString() {
