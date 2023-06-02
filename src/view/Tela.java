@@ -675,6 +675,15 @@ public class Tela extends JFrame {
 		btnLimpaBuscaAluno.addActionListener(ctrlAluno);
 		btnExcluirAluno.addActionListener(ctrlAluno);
 		
+		AreaController ctrlArea = new AreaController(tfCodigoArea, tfNomeArea, taDescArea, tfSubareas, taSubareas, taAreaLista, tfAreaBusca);
+		
+		btnGravaArea.addActionListener(ctrlArea);
+		btnAdicionaSubarea.addActionListener(ctrlArea);
+		btnBuscaArea.addActionListener(ctrlArea);
+		btnLimpaBuscaArea.addActionListener(ctrlArea);
+		btnExcluirArea.addActionListener(ctrlArea);
+		btnRemoveSubarea.addActionListener(ctrlArea);
+		
 		TrabalhoController ctrlTrabalho = new TrabalhoController(tfTrabalhoCodigo, tfTrabalhoTipo, 
 				tfTrabalhoTema, tfTrabalhoArea,  tfTrabalhoSubarea, lblNomeIntegrantes, tfTrabalhoBusca, taTrabalhoLista, tfBuscaIntegrante);
 		
@@ -687,14 +696,6 @@ public class Tela extends JFrame {
 		btnRemoveIntegrante.addActionListener(ctrlTrabalho);
 		btnExcluirTrabalho.addActionListener(ctrlTrabalho);
 		
-		AreaController ctrlArea = new AreaController(tfCodigoArea, tfNomeArea, taDescArea, tfSubareas, taSubareas, taAreaLista, tfAreaBusca);
-		
-		btnGravaArea.addActionListener(ctrlArea);
-		btnAdicionaSubarea.addActionListener(ctrlArea);
-		btnBuscaArea.addActionListener(ctrlArea);
-		btnLimpaBuscaArea.addActionListener(ctrlArea);
-		btnExcluirArea.addActionListener(ctrlArea);
-		btnRemoveSubarea.addActionListener(ctrlArea);
 		
 		OrientacaoController ctrlOrientacao = new OrientacaoController(tfOrientacaoBusca, taOrientacaoLista, 
 				tfTrabalhoOrientacao, lblOrientacaoTrabalho, tfDiaOrientacao, tfMesOrientacao, tfAnoOrientacao, taPontosOrientacao);

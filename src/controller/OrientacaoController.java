@@ -44,7 +44,6 @@ public class OrientacaoController implements ActionListener{
 			InicializaPilhas();
 			atualizaLista();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Ocorreu um erro durante a execução do programa", "ERRO!", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 	}
@@ -70,6 +69,7 @@ public class OrientacaoController implements ActionListener{
 					break;
 			}
 		} catch (Exception e1) {
+			JOptionPane.showMessageDialog(null, "Ocorreu um erro durante a execução do programa", "ERRO!", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		}
 	}

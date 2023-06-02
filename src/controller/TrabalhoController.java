@@ -71,6 +71,9 @@ public class TrabalhoController implements ActionListener {
 				case "Gravar":
 					gravar();	
 					break;
+				case "Excluir":
+					excluir();
+					break;
 				case "Buscar por código":
 					buscarCodigo();	
 					break;
@@ -165,8 +168,70 @@ public class TrabalhoController implements ActionListener {
 			JOptionPane.showMessageDialog(null, "Aluno não encontrado.");
 		}
 	}
+	
+	private void excluir() throws Exception {
+		if (tfTrabalhoBusca.getText().equals("") || !tfTrabalhoBusca.getText().matches("[0-9]+")) {
+			JOptionPane.showMessageDialog(null, "Código inválido!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
+		Trabalho trabalho = new Trabalho();
+		trabalho.codigo = Integer.parseInt(tfTrabalhoBusca.getText());
+		
+		if (tabelaEspalhamentoGrupoCodigo.remove(trabalho)) {
+			JOptionPane.showMessageDialog(null, "Trabalho removido com sucesso");
+			excluirTrabalho(trabalho);
+		} else {
+			JOptionPane.showMessageDialog(null, "Área não encontrada", "ERRO!", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
+
+	private void excluirTrabalho(Trabalho trabalho) throws Exception {
+		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
+		File arq = new File(path, "trabalho.csv");
+		
+		if (arq.exists() && arq.isFile()) {
+			FileInputStream fis = new FileInputStream(arq);
+			InputStreamReader isr = new InputStreamReader(fis);
+			BufferedReader bufferR = new BufferedReader(isr);
+			
+			File novoArq = new File(path, "temp.csv");
+			StringBuffer bufferW = new StringBuffer();
+			FileWriter fWriter = new FileWriter(novoArq);
+			PrintWriter pWriter = new PrintWriter(fWriter);
+			
+			String linha = bufferR.readLine();
+			while (linha != null) {
+				String[] vetLinha = linha.split(";");
+				if (trabalho.codigo != Integer.parseInt(vetLinha[0])) {
+					bufferW.append(linha + System.getProperty("line.separator"));
+					
+				}
+				linha = bufferR.readLine();
+			}
+			
+			bufferR.close();
+			isr.close();
+			fis.close();
+			pWriter.write(bufferW.toString());
+			pWriter.flush();
+			pWriter.close();
+			fWriter.close();
+			
+			arq.delete();
+			novoArq.renameTo(arq);
+			gerarListTrabalho();
+		}
+	}
+
 
 	private void buscarCodigo() throws Exception {
+		if (tfTrabalhoBusca.getText().equals("") || !tfTrabalhoBusca.getText().matches("[0-9]+")) {
+			JOptionPane.showMessageDialog(null, "Código inválido!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
 		Trabalho trabalho = new Trabalho();
 		trabalho.codigo = Integer.parseInt(tfTrabalhoBusca.getText());
 		
@@ -193,7 +258,7 @@ public class TrabalhoController implements ActionListener {
 	}
 	
 	private void gravar() throws Exception {
-		if (numIntegrantes >= 2) {
+		if (numIntegrantes >= 1) {
 			Trabalho trabalho = new Trabalho();
 			trabalho.codigo = Integer.parseInt(tfTrabalhoCodigo.getText());
 			trabalho.tipo = tfTrabalhoTipo.getText();

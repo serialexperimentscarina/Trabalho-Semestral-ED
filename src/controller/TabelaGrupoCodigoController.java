@@ -36,6 +36,21 @@ public class TabelaGrupoCodigoController {
 		return null;
 	}
 	
+	public boolean remove(Trabalho trabalho) throws Exception {
+		int hash = trabalho.hashCodigo();
+		ListaObject l = tabelaDeEspalhamento[hash];
+		int tamanho = l.size();
+		
+		for (int i = 0; i < tamanho; i++) {
+			Trabalho trbl = (Trabalho) l.get(i);
+			if(trbl.codigo == trabalho.codigo) {
+				l.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public String lista() throws Exception {
 		StringBuffer trabalhos = new StringBuffer("");
 		for (int i = 0; i < 10; i++) {

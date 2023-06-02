@@ -11,19 +11,17 @@ public class Area {
 	
 	@Override
 	public String toString() {
-		String stringSubareas = "\"";
+		StringBuffer stringSubareas = new StringBuffer("\"");
 		int numSubareas = subareas.size();
 		
 		for (int i = 0; i < numSubareas; i++) {
 			try {
-				stringSubareas += (subareas.get(i) + ";");
+				stringSubareas.append(subareas.get(i) + ";");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		stringSubareas = (stringSubareas.substring(0, stringSubareas.length() - 1) + "\"");
-		
-		return (codigo + ";" + nome + ";" + descricao + ";" + stringSubareas);
+		return (codigo + ";" + nome + ";" + descricao + ";" + (stringSubareas.toString().substring(0, stringSubareas.length() - 1)) + "\"");
 	}
 
 	

@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import model.Aluno;
 import model.Area;
 
 public class AreaController implements ActionListener{
