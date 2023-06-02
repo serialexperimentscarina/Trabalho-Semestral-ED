@@ -36,6 +36,21 @@ ListaObject[] tabelaDeEspalhamento;
 		return null;
 	}
 	
+	public boolean remove(Area area) throws Exception {
+		int hash = area.hashCode();
+		ListaObject l = tabelaDeEspalhamento[hash];
+		int tamanho = l.size();
+		
+		for (int i = 0; i < tamanho; i++) {
+			Area ar = (Area) l.get(i);
+			if(ar.nome.equals(area.nome)) {
+				l.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public String lista() throws Exception {
 		StringBuffer areas = new StringBuffer("");
 		for (int i = 0; i < 10; i++) {

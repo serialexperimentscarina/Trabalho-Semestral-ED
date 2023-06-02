@@ -57,6 +57,7 @@ public class TrabalhoController implements ActionListener {
 			populaTabelas();
 			gerarListTrabalho();
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Ocorreu um erro durante a execução do programa", "ERRO!", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 
@@ -167,7 +168,7 @@ public class TrabalhoController implements ActionListener {
 
 	private void buscarCodigo() throws Exception {
 		Trabalho trabalho = new Trabalho();
-		trabalho.codigo = tfTrabalhoBusca.getText();
+		trabalho.codigo = Integer.parseInt(tfTrabalhoBusca.getText());
 		
 		trabalho = tabelaEspalhamentoGrupoCodigo.busca(trabalho);
 		if (trabalho != null) {
@@ -194,13 +195,13 @@ public class TrabalhoController implements ActionListener {
 	private void gravar() throws Exception {
 		if (numIntegrantes >= 2) {
 			Trabalho trabalho = new Trabalho();
-			trabalho.codigo = tfTrabalhoCodigo.getText();
+			trabalho.codigo = Integer.parseInt(tfTrabalhoCodigo.getText());
 			trabalho.tipo = tfTrabalhoTipo.getText();
 			trabalho.tema = tfTrabalhoTema.getText();
 			trabalho.subarea = tfTrabalhoSubarea.getText();
 			trabalho.integrantes = lblBuscaIntegrante.getText();
 			
-			if (trabalho.codigo.equals("") || trabalho.tipo.equals("") || trabalho.codigo.equals("") || !trabalho.codigo.matches("[0-9]+")) {
+			if (trabalho.tema.equals("") || trabalho.tipo.equals("")) {
 				JOptionPane.showMessageDialog(null, "Um ou mais campos vazios ou possuem caracteres inválidos", "ERRO!",
 						JOptionPane.ERROR_MESSAGE);
 				return;
@@ -287,7 +288,7 @@ public class TrabalhoController implements ActionListener {
 				if (vetLinha[0].matches("[0-9]+") && (!vetLinha[1].equals("")) && (!vetLinha[2].equals(""))
 						&& (!vetLinha[3].equals("")) && (!vetLinha[4].equals(""))) {
 					Trabalho trabalho = new Trabalho();
-					trabalho.codigo = vetLinha[0];
+					trabalho.codigo = Integer.parseInt(vetLinha[0]);
 					trabalho.tipo = vetLinha[1];
 					trabalho.tema = vetLinha[2];
 					
@@ -368,7 +369,7 @@ public class TrabalhoController implements ActionListener {
 			while (linha != null) {
 				String[] vetLinha = linha.split(";");
 				Trabalho trabalho = new Trabalho();
-				trabalho.codigo = vetLinha[0];
+				trabalho.codigo = Integer.parseInt(vetLinha[0]);
 				trabalho.tipo = vetLinha[1];
 				trabalho.tema = vetLinha[2];
 				trabalho.area = vetLinha[3];

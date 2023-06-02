@@ -81,6 +81,7 @@ public class Tela extends JFrame {
 		JPanel tabTelaInicial = new JPanel();
 		tabbedPane.addTab("Tela Inicial", null, tabTelaInicial, "Tela Inicial");
 		
+		// Aluno
 		JPanel tabAluno = new JPanel();
 		tabbedPane.addTab("Alunos", null, tabAluno, "Registro de alunos");
 		tabAluno.setLayout(null);
@@ -115,7 +116,7 @@ public class Tela extends JFrame {
 		listAluno.add(btnNovoAluno);
 		
 		JScrollPane scrollPaneAluno = new JScrollPane();
-		scrollPaneAluno.setBounds(20, 65, 716, 400);
+		scrollPaneAluno.setBounds(20, 65, 715, 400);
 		listAluno.add(scrollPaneAluno);
 		
 		JTextArea taAlunoLista = new JTextArea();
@@ -183,170 +184,191 @@ public class Tela extends JFrame {
 		btnUploadAluno.setBounds(10, 477, 140, 23);
 		formAluno.add(btnUploadAluno);
 		
-		// Parte de trabalho
+		JButton btnLimpaBuscaAluno = new JButton("Limpar Busca");
+		btnLimpaBuscaAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnLimpaBuscaAluno.setBounds(142, 13, 140, 23);
+		listAluno.add(btnLimpaBuscaAluno);
 		
-				JPanel tabTrabalho = new JPanel();
-				tabbedPane.addTab("Trabalhos", null, tabTrabalho, "Registro de Trabalhos");
-				tabTrabalho.setLayout(null);
-				
-				
-				JLayeredPane paneTrabalho = new JLayeredPane();
-				paneTrabalho.setBounds(10, 11, 759, 511);
-				tabTrabalho.add(paneTrabalho);
-				paneTrabalho.setLayout(new CardLayout(0, 0));
-				
-				JPanel listTrabalho = new JPanel();
-				paneTrabalho.add(listTrabalho, "name_3402776311595900");
-				listTrabalho.setLayout(null);
-				
-				JPanel formTrabalho = new JPanel();
-				paneTrabalho.add(formTrabalho, "name_3402794614776000");
-				formTrabalho.setLayout(null);
-				
-				JScrollPane scrollPaneTrabalho = new JScrollPane();
-				scrollPaneTrabalho.setBounds(20, 68, 716, 397);
-				listTrabalho.add(scrollPaneTrabalho);
-				
-				final JTextArea taTrabalhoLista = new JTextArea();
-				taTrabalhoLista.setEditable(false);
-				scrollPaneTrabalho.setViewportView(taTrabalhoLista);
-				
-				JTextField tfTrabalhoBusca = new JTextField();
-				tfTrabalhoBusca.setFont(new Font("Tahoma", Font.PLAIN, 14));
-				tfTrabalhoBusca.setColumns(10);
-				tfTrabalhoBusca.setBounds(292, 15, 294, 30);
-				listTrabalho.add(tfTrabalhoBusca);
-				
-				JButton btnBuscaCodigoTrabalho = new JButton("Buscar por código");
-				btnBuscaCodigoTrabalho.setToolTipText("Pesquisar por código do trabalho");
-				btnBuscaCodigoTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
-				btnBuscaCodigoTrabalho.setBounds(596, 0, 153, 23);
-				listTrabalho.add(btnBuscaCodigoTrabalho);
-				
-				JLabel lblTrabalhos = new JLabel("Trabalhos");
-				lblTrabalhos.setFont(new Font("Tahoma", Font.BOLD, 18));
-				lblTrabalhos.setBounds(10, 17, 117, 23);
-				listTrabalho.add(lblTrabalhos);
-				
-				JButton btnNovoTrabalho = new JButton("Novo Trabalho");
-				btnNovoTrabalho.setBounds(609, 477, 140, 23);
-				btnNovoTrabalho.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						mudarAba(paneTrabalho, formTrabalho);
-					}
-				});
-				listTrabalho.add(btnNovoTrabalho);
-				
-				
-				JButton btnCancelaTrabalho = new JButton("Cancelar");
-				btnCancelaTrabalho.setBounds(460, 477, 140, 23);
-				btnCancelaTrabalho.addActionListener(new ActionListener() {
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						mudarAba(paneTrabalho, listTrabalho);
-					}
-				});
-				formTrabalho.add(btnCancelaTrabalho);
-				
-				JLabel lblNovoTrabalho = new JLabel("Novo Trabalho");
-				lblNovoTrabalho.setFont(new Font("Tahoma", Font.BOLD, 18));
-				lblNovoTrabalho.setBounds(10, 11, 291, 23);
-				formTrabalho.add(lblNovoTrabalho);
-				
-				JLabel lblCodigoTrabalho = new JLabel("Código: ");
-				lblCodigoTrabalho.setFont(new Font("Tahoma", Font.PLAIN, 14));
-				lblCodigoTrabalho.setBounds(50, 70, 100, 30);
-				formTrabalho.add(lblCodigoTrabalho);
-				
-				tfTrabalhoCodigo = new JTextField();
-				tfTrabalhoCodigo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-				tfTrabalhoCodigo.setBounds(160, 70, 485, 30);
-				formTrabalho.add(tfTrabalhoCodigo);
-				tfTrabalhoCodigo.setColumns(10);
-				
-				JLabel lblTipoTrabalho = new JLabel("Tipo: ");
-				lblTipoTrabalho.setFont(new Font("Tahoma", Font.PLAIN, 14));
-				lblTipoTrabalho.setBounds(50, 120, 100, 30);
-				formTrabalho.add(lblTipoTrabalho);
-				
-				tfTrabalhoTipo = new JTextField();
-				tfTrabalhoTipo.setFont(new Font("Tahoma", Font.PLAIN, 14));
-				tfTrabalhoTipo.setBounds(160, 120, 485, 30);
-				formTrabalho.add(tfTrabalhoTipo);
-				tfTrabalhoTipo.setColumns(10);
-				
-				JLabel lblTemaTrabalho = new JLabel("Tema: ");
-				lblTemaTrabalho.setFont(new Font("Tahoma", Font.PLAIN, 14));
-				lblTemaTrabalho.setBounds(50, 170, 100, 30);
-				formTrabalho.add(lblTemaTrabalho);
-				
-				tfTrabalhoTema = new JTextField();
-				tfTrabalhoTema.setFont(new Font("Tahoma", Font.PLAIN, 14));
-				tfTrabalhoTema.setBounds(160, 170, 485, 30);
-				formTrabalho.add(tfTrabalhoTema);
-				tfTrabalhoTema.setColumns(10);
-				
-				JLabel lblAreaTrabalho = new JLabel("Área: ");
-				lblAreaTrabalho.setFont(new Font("Tahoma", Font.PLAIN, 14));
-				lblAreaTrabalho.setBounds(50, 220, 100, 30);
-				formTrabalho.add(lblAreaTrabalho);
-				
-				tfTrabalhoArea = new JTextField();
-				tfTrabalhoArea.setFont(new Font("Tahoma", Font.PLAIN, 14));
-				tfTrabalhoArea.setBounds(160, 220, 485, 30);
-				formTrabalho.add(tfTrabalhoArea);
-				tfTrabalhoArea.setColumns(10);
-				
-				JLabel lblSubareaTrabalho = new JLabel("Subárea: ");
-				lblSubareaTrabalho.setFont(new Font("Tahoma", Font.PLAIN, 14));
-				lblSubareaTrabalho.setBounds(50, 270, 100, 30);
-				formTrabalho.add(lblSubareaTrabalho);
-				
-				tfTrabalhoSubarea = new JTextField();
-				tfTrabalhoSubarea.setFont(new Font("Tahoma", Font.PLAIN, 14));
-				tfTrabalhoSubarea.setBounds(160, 270, 485, 30);
-				formTrabalho.add(tfTrabalhoSubarea);
-				tfTrabalhoSubarea.setColumns(10);
-				
-				JLabel lblAlunosParticipantesTrabalho = new JLabel("Alunos participantes: ");
-				lblAlunosParticipantesTrabalho.setFont(new Font("Tahoma", Font.PLAIN, 14));
-				lblAlunosParticipantesTrabalho.setBounds(50, 320, 130, 30);
-				formTrabalho.add(lblAlunosParticipantesTrabalho);
-				
-				JButton btnUploadTrabalho = new JButton("Upload por CSV");
-				btnUploadTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
-				btnUploadTrabalho.setBounds(10, 477, 140, 23);
-				formTrabalho.add(btnUploadTrabalho);
-				
-				JButton btnGravarTrabalho = new JButton("Gravar");
-				btnGravarTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
-				btnGravarTrabalho.setBounds(609, 477, 140, 23);
-				formTrabalho.add(btnGravarTrabalho);
-				
-				tfBuscaIntegrante = new JTextField("");
-				tfBuscaIntegrante.setBounds(200, 320, 445, 30);
-				formTrabalho.add(tfBuscaIntegrante);
-
-				final JLabel lblNomeIntegrantes = new JLabel("");
-				lblNomeIntegrantes.setBounds(50, 360, 500, 30);
-				formTrabalho.add(lblNomeIntegrantes);
-				
-				
-		        JButton btnAdicionaIntegrante = new JButton("Adicionar");
-		        btnAdicionaIntegrante.setBounds(420, 360, 100, 25);
-		        formTrabalho.add(btnAdicionaIntegrante);
-		        
-
-		        JButton btnRemoveIntegrante = new JButton("Remover");
-		        btnRemoveIntegrante.setBounds(545, 360, 100, 25);
-		        formTrabalho.add(btnRemoveIntegrante);
-		        
-				JButton btnLimpaBuscaTrabalho = new JButton("Limpar Busca");
-				btnLimpaBuscaTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
-				btnLimpaBuscaTrabalho.setBounds(142, 19, 140, 23);
-				listTrabalho.add(btnLimpaBuscaTrabalho);
+		JButton btnExcluirAluno = new JButton("Excluir");
+		btnExcluirAluno.setToolTipText("Pesquisar por RA");
+		btnExcluirAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnExcluirAluno.setBounds(596, 31, 140, 23);
+		listAluno.add(btnExcluirAluno);
 		
+		// Trabalho
+		JPanel tabTrabalho = new JPanel();
+		tabbedPane.addTab("Trabalhos", null, tabTrabalho, "Registro de Trabalhos");
+		tabTrabalho.setLayout(null);
+		
+		JLayeredPane paneTrabalho = new JLayeredPane();
+		paneTrabalho.setBounds(10, 11, 759, 511);
+		tabTrabalho.add(paneTrabalho);
+		paneTrabalho.setLayout(new CardLayout(0, 0));
+		
+		JPanel listTrabalho = new JPanel();
+		paneTrabalho.add(listTrabalho, "name_3402776311595900");
+		listTrabalho.setLayout(null);
+		
+		JPanel formTrabalho = new JPanel();
+		paneTrabalho.add(formTrabalho, "name_3402794614776000");
+		formTrabalho.setLayout(null);
+		
+		JScrollPane scrollPaneTrabalho = new JScrollPane();
+		scrollPaneTrabalho.setBounds(20, 80, 715, 385);
+		listTrabalho.add(scrollPaneTrabalho);
+		
+		final JTextArea taTrabalhoLista = new JTextArea();
+		taTrabalhoLista.setEditable(false);
+		scrollPaneTrabalho.setViewportView(taTrabalhoLista);
+		
+		JTextField tfTrabalhoBusca = new JTextField();
+		tfTrabalhoBusca.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfTrabalhoBusca.setColumns(10);
+		tfTrabalhoBusca.setBounds(287, 11, 294, 30);
+		listTrabalho.add(tfTrabalhoBusca);
+		
+		JButton btnBuscaCodigoTrabalho = new JButton("Buscar por código");
+		btnBuscaCodigoTrabalho.setToolTipText("Pesquisar por código do trabalho");
+		btnBuscaCodigoTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnBuscaCodigoTrabalho.setBounds(591, 0, 153, 23);
+		listTrabalho.add(btnBuscaCodigoTrabalho);
+		
+		JLabel lblTrabalhos = new JLabel("Trabalhos");
+		lblTrabalhos.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblTrabalhos.setBounds(10, 17, 117, 23);
+		listTrabalho.add(lblTrabalhos);
+		
+		JButton btnNovoTrabalho = new JButton("Novo Trabalho");
+		btnNovoTrabalho.setBounds(609, 477, 140, 23);
+		btnNovoTrabalho.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mudarAba(paneTrabalho, formTrabalho);
+			}
+		});
+		listTrabalho.add(btnNovoTrabalho);
+		
+		
+		JButton btnCancelaTrabalho = new JButton("Cancelar");
+		btnCancelaTrabalho.setBounds(460, 477, 140, 23);
+		btnCancelaTrabalho.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mudarAba(paneTrabalho, listTrabalho);
+			}
+		});
+		formTrabalho.add(btnCancelaTrabalho);
+		
+		JLabel lblNovoTrabalho = new JLabel("Novo Trabalho");
+		lblNovoTrabalho.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblNovoTrabalho.setBounds(10, 11, 291, 23);
+		formTrabalho.add(lblNovoTrabalho);
+		
+		JLabel lblCodigoTrabalho = new JLabel("Código: ");
+		lblCodigoTrabalho.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblCodigoTrabalho.setBounds(50, 70, 100, 30);
+		formTrabalho.add(lblCodigoTrabalho);
+		
+		tfTrabalhoCodigo = new JTextField();
+		tfTrabalhoCodigo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfTrabalhoCodigo.setBounds(160, 70, 485, 30);
+		formTrabalho.add(tfTrabalhoCodigo);
+		tfTrabalhoCodigo.setColumns(10);
+		
+		JLabel lblTipoTrabalho = new JLabel("Tipo: ");
+		lblTipoTrabalho.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblTipoTrabalho.setBounds(50, 120, 100, 30);
+		formTrabalho.add(lblTipoTrabalho);
+		
+		tfTrabalhoTipo = new JTextField();
+		tfTrabalhoTipo.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfTrabalhoTipo.setBounds(160, 120, 485, 30);
+		formTrabalho.add(tfTrabalhoTipo);
+		tfTrabalhoTipo.setColumns(10);
+		
+		JLabel lblTemaTrabalho = new JLabel("Tema: ");
+		lblTemaTrabalho.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblTemaTrabalho.setBounds(50, 170, 100, 30);
+		formTrabalho.add(lblTemaTrabalho);
+		
+		tfTrabalhoTema = new JTextField();
+		tfTrabalhoTema.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfTrabalhoTema.setBounds(160, 170, 485, 30);
+		formTrabalho.add(tfTrabalhoTema);
+		tfTrabalhoTema.setColumns(10);
+		
+		JLabel lblAreaTrabalho = new JLabel("Área: ");
+		lblAreaTrabalho.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblAreaTrabalho.setBounds(50, 220, 100, 30);
+		formTrabalho.add(lblAreaTrabalho);
+		
+		tfTrabalhoArea = new JTextField();
+		tfTrabalhoArea.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfTrabalhoArea.setBounds(160, 220, 485, 30);
+		formTrabalho.add(tfTrabalhoArea);
+		tfTrabalhoArea.setColumns(10);
+		
+		JLabel lblSubareaTrabalho = new JLabel("Subárea: ");
+		lblSubareaTrabalho.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblSubareaTrabalho.setBounds(50, 270, 100, 30);
+		formTrabalho.add(lblSubareaTrabalho);
+		
+		tfTrabalhoSubarea = new JTextField();
+		tfTrabalhoSubarea.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		tfTrabalhoSubarea.setBounds(160, 270, 485, 30);
+		formTrabalho.add(tfTrabalhoSubarea);
+		tfTrabalhoSubarea.setColumns(10);
+		
+		JLabel lblAlunosParticipantesTrabalho = new JLabel("Alunos participantes: ");
+		lblAlunosParticipantesTrabalho.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblAlunosParticipantesTrabalho.setBounds(50, 320, 130, 30);
+		formTrabalho.add(lblAlunosParticipantesTrabalho);
+		
+		JButton btnUploadTrabalho = new JButton("Upload por CSV");
+		btnUploadTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnUploadTrabalho.setBounds(10, 477, 140, 23);
+		formTrabalho.add(btnUploadTrabalho);
+		
+		JButton btnGravarTrabalho = new JButton("Gravar");
+		btnGravarTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnGravarTrabalho.setBounds(609, 477, 140, 23);
+		formTrabalho.add(btnGravarTrabalho);
+		
+		tfBuscaIntegrante = new JTextField("");
+		tfBuscaIntegrante.setBounds(200, 320, 445, 30);
+		formTrabalho.add(tfBuscaIntegrante);
+
+		final JLabel lblNomeIntegrantes = new JLabel("");
+		lblNomeIntegrantes.setBounds(50, 360, 500, 30);
+		formTrabalho.add(lblNomeIntegrantes);
+		
+        JButton btnAdicionaIntegrante = new JButton("Adicionar");
+        btnAdicionaIntegrante.setBounds(420, 360, 100, 25);
+        formTrabalho.add(btnAdicionaIntegrante);
+        
+        JButton btnRemoveIntegrante = new JButton("Remover");
+        btnRemoveIntegrante.setBounds(545, 360, 100, 25);
+        formTrabalho.add(btnRemoveIntegrante);
+        
+		JButton btnLimpaBuscaTrabalho = new JButton("Limpar Busca");
+		btnLimpaBuscaTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnLimpaBuscaTrabalho.setBounds(137, 15, 140, 23);
+		listTrabalho.add(btnLimpaBuscaTrabalho);
+		
+		JButton btnBuscaSubareaTrabalho = new JButton("Buscar por subárea");
+		btnBuscaSubareaTrabalho.setToolTipText("Pesquisar por código do área");
+		btnBuscaSubareaTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnBuscaSubareaTrabalho.setBounds(591, 25, 153, 23);
+		listTrabalho.add(btnBuscaSubareaTrabalho);
+		
+		JButton btnExcluirTrabalho = new JButton("Excluir");
+		btnExcluirTrabalho.setToolTipText("Excluir trabalho");
+		btnExcluirTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnExcluirTrabalho.setBounds(591, 50, 153, 23);
+		listTrabalho.add(btnExcluirTrabalho);
+		
+		
+		// Área
 		JPanel tabArea = new JPanel();
 		tabbedPane.addTab("Áreas", null, tabArea, "Registro de áreas");
 		tabArea.setLayout(null);
@@ -379,11 +401,11 @@ public class Tela extends JFrame {
 		JButton btnBuscaArea = new JButton("Buscar");
 		btnBuscaArea.setToolTipText("Pesquisar por nome de área");
 		btnBuscaArea.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnBuscaArea.setBounds(595, 15, 140, 23);
+		btnBuscaArea.setBounds(595, 0, 140, 23);
 		listArea.add(btnBuscaArea);
 		
 		JScrollPane scrollPaneArea = new JScrollPane();
-		scrollPaneArea.setBounds(20, 48, 714, 418);
+		scrollPaneArea.setBounds(20, 65, 715, 400);
 		listArea.add(scrollPaneArea);
 		
 		JTextArea taAreaLista = new JTextArea();
@@ -465,17 +487,35 @@ public class Tela extends JFrame {
 		
 		JButton btnAdicionaSubarea = new JButton("Adicionar");
 		btnAdicionaSubarea.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnAdicionaSubarea.setBounds(505, 279, 140, 23);
+		btnAdicionaSubarea.setBounds(505, 268, 140, 23);
 		formArea.add(btnAdicionaSubarea);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(160, 316, 485, 82);
+		scrollPane.setBounds(160, 330, 485, 82);
 		formArea.add(scrollPane);
 		
 		JTextArea taSubareas = new JTextArea();
 		scrollPane.setViewportView(taSubareas);
 		taSubareas.setEditable(false);
 		
+		JButton btnLimpaBuscaArea = new JButton("Limpar Busca");
+		btnLimpaBuscaArea.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnLimpaBuscaArea.setBounds(141, 15, 140, 23);
+		listArea.add(btnLimpaBuscaArea);
+		
+		JButton btnExcluirArea = new JButton("Excluir");
+		btnExcluirArea.setToolTipText("Excluir Área");
+		btnExcluirArea.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnExcluirArea.setBounds(595, 29, 140, 23);
+		listArea.add(btnExcluirArea);
+		
+		JButton btnRemoveSubarea = new JButton("Remover");
+		btnRemoveSubarea.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnRemoveSubarea.setBounds(505, 296, 140, 23);
+		formArea.add(btnRemoveSubarea);
+		
+		
+		// Orientação
 		JPanel tabOrientacao = new JPanel();
 		tabbedPane.addTab("Orientações", null, tabOrientacao, "Registro de Orientações");
 		tabOrientacao.setLayout(null);
@@ -624,18 +664,10 @@ public class Tela extends JFrame {
 		lblOrientacaoTrabalho.setBounds(225, 111, 155, 30);
 		formOrientacao.add(lblOrientacaoTrabalho);
 		
+		
+		
+		// Controllers
 		AlunoController ctrlAluno = new AlunoController(tfAlunoNome, tfAlunoRa, taAlunoLista, tfAlunoBusca);
-		
-		JButton btnLimpaBuscaAluno = new JButton("Limpar Busca");
-		btnLimpaBuscaAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnLimpaBuscaAluno.setBounds(142, 13, 140, 23);
-		listAluno.add(btnLimpaBuscaAluno);
-		
-		JButton btnExcluirAluno = new JButton("Excluir");
-		btnExcluirAluno.setToolTipText("Pesquisar por RA");
-		btnExcluirAluno.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnExcluirAluno.setBounds(596, 31, 140, 23);
-		listAluno.add(btnExcluirAluno);
 		
 		btnGravarAluno.addActionListener(ctrlAluno);
 		btnBuscaAluno.addActionListener(ctrlAluno);
@@ -646,12 +678,6 @@ public class Tela extends JFrame {
 		TrabalhoController ctrlTrabalho = new TrabalhoController(tfTrabalhoCodigo, tfTrabalhoTipo, 
 				tfTrabalhoTema, tfTrabalhoArea,  tfTrabalhoSubarea, lblNomeIntegrantes, tfTrabalhoBusca, taTrabalhoLista, tfBuscaIntegrante);
 		
-		JButton btnBuscaSubareaTrabalho = new JButton("Buscar por subárea");
-		btnBuscaSubareaTrabalho.setToolTipText("Pesquisar por código do área");
-		btnBuscaSubareaTrabalho.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnBuscaSubareaTrabalho.setBounds(596, 34, 153, 23);
-		listTrabalho.add(btnBuscaSubareaTrabalho);
-		
 		btnGravarTrabalho.addActionListener(ctrlTrabalho);
 		btnUploadTrabalho.addActionListener(ctrlTrabalho);
 		btnBuscaCodigoTrabalho.addActionListener(ctrlTrabalho);
@@ -659,18 +685,16 @@ public class Tela extends JFrame {
 		btnLimpaBuscaTrabalho.addActionListener(ctrlTrabalho);
 		btnAdicionaIntegrante.addActionListener(ctrlTrabalho);
 		btnRemoveIntegrante.addActionListener(ctrlTrabalho);
+		btnExcluirTrabalho.addActionListener(ctrlTrabalho);
 		
 		AreaController ctrlArea = new AreaController(tfCodigoArea, tfNomeArea, taDescArea, tfSubareas, taSubareas, taAreaLista, tfAreaBusca);
-		
-		JButton btnLimpaBuscaArea = new JButton("Limpar Busca");
-		btnLimpaBuscaArea.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnLimpaBuscaArea.setBounds(141, 15, 140, 23);
-		listArea.add(btnLimpaBuscaArea);
 		
 		btnGravaArea.addActionListener(ctrlArea);
 		btnAdicionaSubarea.addActionListener(ctrlArea);
 		btnBuscaArea.addActionListener(ctrlArea);
 		btnLimpaBuscaArea.addActionListener(ctrlArea);
+		btnExcluirArea.addActionListener(ctrlArea);
+		btnRemoveSubarea.addActionListener(ctrlArea);
 		
 		OrientacaoController ctrlOrientacao = new OrientacaoController(tfOrientacaoBusca, taOrientacaoLista, 
 				tfTrabalhoOrientacao, lblOrientacaoTrabalho, tfDiaOrientacao, tfMesOrientacao, tfAnoOrientacao, taPontosOrientacao);

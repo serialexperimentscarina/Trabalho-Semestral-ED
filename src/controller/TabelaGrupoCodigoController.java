@@ -29,7 +29,7 @@ public class TabelaGrupoCodigoController {
 		
 		for (int i = 0; i < tamanho; i++) {
 			Trabalho trbl = (Trabalho) l.get(i);
-			if(trabalho.codigo.equals(trbl.codigo)) {
+			if(trabalho.codigo == trbl.codigo) {
 				return trbl;
 			}
 		}

@@ -65,6 +65,7 @@ public class AlunoController implements ActionListener {
 					break;
 			}
 		} catch (Exception e1) {
+			JOptionPane.showMessageDialog(null, "Ocorreu um erro durante a execução do programa", "ERRO!", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		}
 		

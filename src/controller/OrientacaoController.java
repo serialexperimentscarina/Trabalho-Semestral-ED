@@ -44,6 +44,7 @@ public class OrientacaoController implements ActionListener{
 			InicializaPilhas();
 			atualizaLista();
 		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Ocorreu um erro durante a execução do programa", "ERRO!", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
 	}
@@ -101,7 +102,7 @@ public class OrientacaoController implements ActionListener{
 			return;
 		}
 		Trabalho trabalho = new Trabalho();
-		trabalho.codigo = lblOrientacaoTrabalho.getText().toString();
+		trabalho.codigo = Integer.parseInt(lblOrientacaoTrabalho.getText());
 		TrabalhoController.tabelaEspalhamentoGrupoCodigo.busca(trabalho).orientacoes.push(orientacao);
 		
 		gravaOrientacao(orientacao.toString() + ";" + trabalho.codigo);
@@ -135,10 +136,10 @@ public class OrientacaoController implements ActionListener{
 
 	private void adicionar() throws Exception {
 		Trabalho trabalho = new Trabalho();
-		trabalho.codigo = tfTrabalhoOrientacao.getText();
+		trabalho.codigo = Integer.parseInt(tfTrabalhoOrientacao.getText());
 		trabalho = TrabalhoController.tabelaEspalhamentoGrupoCodigo.busca(trabalho);
 		if (trabalho != null) {
-			lblOrientacaoTrabalho.setText(trabalho.codigo);
+			lblOrientacaoTrabalho.setText(String.valueOf(trabalho.codigo));
 			tfTrabalhoOrientacao.setText("");
 		} else {
 			JOptionPane.showMessageDialog(null, "Trabalho com o código informado não encontrado no sistema.");
@@ -148,7 +149,7 @@ public class OrientacaoController implements ActionListener{
 	
 	private void buscar() throws Exception {
 		Trabalho trabalho = new Trabalho();
-		trabalho.codigo = tfOrientacaoBusca.getText();
+		trabalho.codigo = Integer.parseInt(tfOrientacaoBusca.getText());
 		trabalho = TrabalhoController.tabelaEspalhamentoGrupoCodigo.busca(trabalho);
 		if (trabalho != null) {
 			try {
@@ -181,7 +182,7 @@ public class OrientacaoController implements ActionListener{
 				orientacao.ano = Integer.parseInt(vetLinha[2]);
 				orientacao.pontos = vetLinha[3];
 				Trabalho trabalho = new Trabalho();
-				trabalho.codigo = vetLinha[4];
+				trabalho.codigo = Integer.parseInt(vetLinha[4]);
 				TrabalhoController.tabelaEspalhamentoGrupoCodigo.busca(trabalho).orientacoes.push(orientacao);
 				linha = buffer.readLine();
 			}

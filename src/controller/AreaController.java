@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import model.Aluno;
 import model.Area;
 
 public class AreaController implements ActionListener{
@@ -58,8 +59,14 @@ public class AreaController implements ActionListener{
 				case "Adicionar":
 					adicionar();	
 					break;
+				case "Remover":
+					remover();
+					break;
 				case "Buscar":
 					buscar();	
+					break;
+				case "Excluir":
+					excluir();	
 					break;
 				case "Limpar Busca":
 					atualizaLista();	
@@ -68,6 +75,7 @@ public class AreaController implements ActionListener{
 					break;
 			}
 		} catch (Exception e1) {
+			JOptionPane.showMessageDialog(null, "Ocorreu um erro durante a execução do programa", "ERRO!", JOptionPane.ERROR_MESSAGE);
 			e1.printStackTrace();
 		}
 		
@@ -128,6 +136,59 @@ public class AreaController implements ActionListener{
 		pw.flush();
 		pw.close();
 		fw.close();
+		
+		atualizaLista();
+	}
+	
+	private void excluir() throws Exception {
+		Area area = new Area();
+		area.nome = tfAreaBusca.getText();
+		
+		if (tabelaEspalhamentoArea.remove(area)) {
+			JOptionPane.showMessageDialog(null, "Área removida com sucesso");
+			excluirArea(area);
+		} else {
+			JOptionPane.showMessageDialog(null, "Área não encontrada", "ERRO!", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
+
+	private void excluirArea(Area area) throws Exception {
+		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
+		File arq = new File(path, "area.csv");
+		
+		if (arq.exists() && arq.isFile()) {
+			FileInputStream fis = new FileInputStream(arq);
+			InputStreamReader isr = new InputStreamReader(fis);
+			BufferedReader bufferR = new BufferedReader(isr);
+			
+			File novoArq = new File(path, "temp.csv");
+			StringBuffer bufferW = new StringBuffer();
+			FileWriter fWriter = new FileWriter(novoArq);
+			PrintWriter pWriter = new PrintWriter(fWriter);
+			
+			String linha = bufferR.readLine();
+			while (linha != null) {
+				String[] vetLinha = linha.split(";");
+				if (!area.nome.equals(vetLinha[2])) {
+					bufferW.append(linha + System.getProperty("line.separator"));
+					
+				}
+				linha = bufferR.readLine();
+			}
+			
+			bufferR.close();
+			isr.close();
+			fis.close();
+			pWriter.write(bufferW.toString());
+			pWriter.flush();
+			pWriter.close();
+			fWriter.close();
+			
+			arq.delete();
+			novoArq.renameTo(arq);
+			atualizaLista();
+		}
 	}
 
 	private void adicionar() {
@@ -139,7 +200,25 @@ public class AreaController implements ActionListener{
 			JOptionPane.showMessageDialog(null, "Subárea adicionada com sucesso.");
 		}
 	}
-
+	
+	private void remover() throws Exception {
+		String subarea = tfSubareas.getText();
+		if (!subarea.equals("") && taSubareas.getText().contains(subarea)) {
+			String[] subareas = taSubareas.getText().split(System.getProperty("line.separator"));
+			
+			StringBuffer buffer = new StringBuffer();
+			for (String sub : subareas) {
+				if (!sub.equals(subarea)) {
+					buffer.append(sub + System.getProperty("line.separator"));
+				}
+			}
+		
+			taSubareas.setText(buffer.toString());
+			JOptionPane.showMessageDialog(null, "Subárea removida com sucesso.");
+		} else {
+			JOptionPane.showMessageDialog(null, "Subárea não adicionada.", "ERRO!", JOptionPane.ERROR_MESSAGE);
+		}
+	}
 
 	private void buscar() throws Exception {
 		Area area = new Area();
@@ -196,6 +275,8 @@ public class AreaController implements ActionListener{
 			buffer.close();
 			isr.close();
 			fis.close();
+			
+			atualizaLista();
 		}
 	}
 	

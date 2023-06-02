@@ -4,7 +4,7 @@ import br.com.serialexperimentscarina.pilhaobject.PilhaObject;
 
 public class Trabalho {
 	
-	public String codigo;
+	public int codigo;
 	public String tipo;
 	public String tema;
 	public String area;
@@ -20,7 +20,7 @@ public class Trabalho {
 
 	
 	public int hashCodigo() {
-		return (Integer.parseInt(codigo) % 10);
+		return (codigo % 10);
 	}
 	
 	public int hashSubarea() {
