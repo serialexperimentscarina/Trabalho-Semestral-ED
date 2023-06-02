@@ -78,9 +78,6 @@ public class Tela extends JFrame {
 		tabbedPane.setBounds(0, 0, 784, 561);
 		contentPane.add(tabbedPane);
 		
-		JPanel tabTelaInicial = new JPanel();
-		tabbedPane.addTab("Tela Inicial", null, tabTelaInicial, "Tela Inicial");
-		
 		// Aluno
 		JPanel tabAluno = new JPanel();
 		tabbedPane.addTab("Alunos", null, tabAluno, "Registro de alunos");
@@ -540,7 +537,7 @@ public class Tela extends JFrame {
 		
 		JButton btnNovaOrientacao = new JButton("Nova Orientação");
 		btnNovaOrientacao.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnNovaOrientacao.setBounds(594, 476, 140, 23);
+		btnNovaOrientacao.setBounds(594, 488, 140, 23);
 		btnNovaOrientacao.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -710,6 +707,5 @@ public class Tela extends JFrame {
 		btnBuscaOrientacao.addActionListener(ctrlOrientacao);
 		btnLimpaBuscaOrientacao.addActionListener(ctrlOrientacao);
 		btnExcluirOrientacao.addActionListener(ctrlOrientacao);
-		
 	}
 }
