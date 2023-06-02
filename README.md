@@ -21,10 +21,12 @@ necessidade, consultar, por subárea, quais os grupos envolvidos
 - Uma tela que permita ao orientador consultar a última orientação.
 - Uma tela que permita ao orientador consultar os grupos de uma determinada subárea. Uma Tabela de Espalhamento deve ser criada.
 
+## Documentação
+[Documentação](https://docs.google.com/document/d/1jK2fayBbymfOtzLUYpz13oBNoujtD3CQtZLStT0toPM/edit#)
 
 ## Autores
 
 - [@Kauã Nunes Nascimento](https://www.github.com/knn654)
 - [@Carina Gonçalves Barroso](https://www.github.com/serialexperimentscarina)
 - [@Felype Dantas](https://github.com/felypedantas)
-
+- Angely Sheila
