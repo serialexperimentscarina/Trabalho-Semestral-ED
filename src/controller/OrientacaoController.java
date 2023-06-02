@@ -56,6 +56,9 @@ public class OrientacaoController implements ActionListener{
 				case "Gravar":
 					gravar();	
 					break;
+				case "Excluir última":
+					excluir();
+					break;
 				case "Buscar última":
 					buscar();	
 					break;
@@ -133,6 +136,64 @@ public class OrientacaoController implements ActionListener{
 		pw.close();
 		fw.close();
 	}
+	
+	private void excluir() throws Exception {
+		if (tfOrientacaoBusca.getText().equals("") || !tfOrientacaoBusca.getText().matches("[0-9]+")) {
+			JOptionPane.showMessageDialog(null, "Código inválido!", "ERRO!", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		
+		Trabalho trabalho = new Trabalho();
+		trabalho.codigo = Integer.parseInt(tfOrientacaoBusca.getText());
+		trabalho = TrabalhoController.tabelaEspalhamentoGrupoCodigo.busca(trabalho);
+		
+		if (trabalho != null && !trabalho.orientacoes.isEmpty()) {
+			Orientacao orientacao = (Orientacao) trabalho.orientacoes.pop();
+			JOptionPane.showMessageDialog(null, "Última orientação removida com sucesso");
+			excluirOrientacao(trabalho.codigo, orientacao);
+		} else {
+			JOptionPane.showMessageDialog(null, "Trabalho não existe ou não possui orientações", "ERRO!", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
+
+	private void excluirOrientacao(int codigo, Orientacao orientacao) throws Exception {
+		String path = (System.getProperty("user.home") + File.separator + "SistemaTCC");
+		File arq = new File(path, "orientacoes.csv");
+
+		if (arq.exists() && arq.isFile()) {
+			FileInputStream fis = new FileInputStream(arq);
+			InputStreamReader isr = new InputStreamReader(fis);
+			BufferedReader bufferR = new BufferedReader(isr);
+			
+			File novoArq = new File(path, "temp.csv");
+			StringBuffer bufferW = new StringBuffer();
+			FileWriter fWriter = new FileWriter(novoArq);
+			PrintWriter pWriter = new PrintWriter(fWriter);
+			
+			String linha = bufferR.readLine();
+			while (linha != null) {
+				String[] vetLinha = linha.split(";");
+				if (codigo != Integer.parseInt(vetLinha[4]) || orientacao.dia != Integer.parseInt(vetLinha[0]) || orientacao.mes != Integer.parseInt(vetLinha[1]) || orientacao.ano != Integer.parseInt(vetLinha[2])) {
+					bufferW.append(linha + System.getProperty("line.separator"));
+				} 
+				linha = bufferR.readLine();
+			}
+			
+			bufferR.close();
+			isr.close();
+			fis.close();
+			pWriter.write(bufferW.toString());
+			pWriter.flush();
+			pWriter.close();
+			fWriter.close();
+			
+			arq.delete();
+			novoArq.renameTo(arq);
+			atualizaLista();
+		}
+	}
+
 
 	private void adicionar() throws Exception {
 		Trabalho trabalho = new Trabalho();
@@ -183,7 +244,11 @@ public class OrientacaoController implements ActionListener{
 				orientacao.pontos = vetLinha[3];
 				Trabalho trabalho = new Trabalho();
 				trabalho.codigo = Integer.parseInt(vetLinha[4]);
-				TrabalhoController.tabelaEspalhamentoGrupoCodigo.busca(trabalho).orientacoes.push(orientacao);
+				trabalho = TrabalhoController.tabelaEspalhamentoGrupoCodigo.busca(trabalho);
+				
+				if (trabalho != null) {
+					trabalho.orientacoes.push(orientacao);
+				}
 				linha = buffer.readLine();
 			}
 			buffer.close();

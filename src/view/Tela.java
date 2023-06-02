@@ -555,7 +555,7 @@ public class Tela extends JFrame {
 		listOrientacao.add(btnLimpaBuscaOrientacao);
 		
 		JScrollPane scrollPaneOrientacao = new JScrollPane();
-		scrollPaneOrientacao.setBounds(20, 49, 712, 416);
+		scrollPaneOrientacao.setBounds(20, 65, 715, 416);
 		listOrientacao.add(scrollPaneOrientacao);
 		
 		JTextArea taOrientacaoLista = new JTextArea();
@@ -572,7 +572,7 @@ public class Tela extends JFrame {
 		JButton btnBuscaOrientacao = new JButton("Buscar última");
 		btnBuscaOrientacao.setToolTipText("Pesquisar por nome de área");
 		btnBuscaOrientacao.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnBuscaOrientacao.setBounds(594, 15, 140, 23);
+		btnBuscaOrientacao.setBounds(594, 0, 140, 23);
 		listOrientacao.add(btnBuscaOrientacao);
 		
 		JLabel lblNovaOrientacao = new JLabel("Nova Orientação");
@@ -664,6 +664,11 @@ public class Tela extends JFrame {
 		lblOrientacaoTrabalho.setBounds(225, 111, 155, 30);
 		formOrientacao.add(lblOrientacaoTrabalho);
 		
+		JButton btnExcluirOrientacao = new JButton("Excluir última");
+		btnExcluirOrientacao.setToolTipText("Pesquisar por nome de área");
+		btnExcluirOrientacao.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnExcluirOrientacao.setBounds(594, 31, 140, 23);
+		listOrientacao.add(btnExcluirOrientacao);
 		
 		
 		// Controllers
@@ -699,10 +704,12 @@ public class Tela extends JFrame {
 		
 		OrientacaoController ctrlOrientacao = new OrientacaoController(tfOrientacaoBusca, taOrientacaoLista, 
 				tfTrabalhoOrientacao, lblOrientacaoTrabalho, tfDiaOrientacao, tfMesOrientacao, tfAnoOrientacao, taPontosOrientacao);
+		
 		btnGravaOrientacao.addActionListener(ctrlOrientacao);
 		btnAdicionarTrabalho.addActionListener(ctrlOrientacao);
 		btnBuscaOrientacao.addActionListener(ctrlOrientacao);
 		btnLimpaBuscaOrientacao.addActionListener(ctrlOrientacao);
+		btnExcluirOrientacao.addActionListener(ctrlOrientacao);
 		
 	}
 }
